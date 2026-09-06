@@ -1,6 +1,8 @@
 # Motion
 
 > Part of the [Alan Mobile Design System](README.md) · Foundations. Motion is functional — it orients the user, expresses hierarchy and causality, and masks latency; never decoration. Durations: **100 · 150 · 200 · 250 · 300 · 400 ms**; nothing exceeds 400ms except ambient/looping indicators.
+>
+> **Making it smooth on device (60/120fps, per platform):** [`../starter-template/motion-implementation.md`](../starter-template/motion-implementation.md).
 
 ---
 
