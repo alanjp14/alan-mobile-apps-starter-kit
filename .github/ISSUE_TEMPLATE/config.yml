@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Governance, versioning & contribution workflow
+    url: https://github.com/alanjp14/alan-mobile-apps-starter-kit/blob/main/docs/governance.md
+    about: How AMDS is versioned, reviewed, and released. Read before proposing a change.
+  - name: AI prompt library
+    url: https://github.com/alanjp14/alan-mobile-apps-starter-kit/tree/main/prompts
+    about: Copy-paste prompts to draft a component / screen / feature / app with an AI agent.

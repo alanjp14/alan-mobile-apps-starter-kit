@@ -1,9 +1,17 @@
 # Alan Mobile Apps — Master Template
 
+[![CI](https://github.com/alanjp14/alan-mobile-apps-starter-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/alanjp14/alan-mobile-apps-starter-kit/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-16A34A.svg)](LICENSE)
+
 **System:** Alan Mobile Design System (AMDS) **v1.0**
-**Repository:** `alan-mobileapps-master-template`
+**Repository:** [`alanjp14/alan-mobile-apps-starter-kit`](https://github.com/alanjp14/alan-mobile-apps-starter-kit)
 
 A reusable **UI/UX + architecture master template** for every future `[COMPANY_NAME]` mobile application on **Android and iOS**. This is **not** a production app — it is a central source of truth you clone, brand, and build on.
+
+```bash
+git clone https://github.com/alanjp14/alan-mobile-apps-starter-kit.git
+node tool/validate.mjs      # or: npm run validate
+```
 
 ---
 
@@ -136,6 +144,11 @@ node tool/validate.mjs
 ```
 
 Checks JSON syntax, empty files, broken relative markdown references, duplicate filenames, stale references, and placeholder mistakes. **0 errors** is the merge gate.
+
+## 13. Contributing & license
+
+- **Contributing:** [`CONTRIBUTING.md`](CONTRIBUTING.md) (short) · [`docs/governance.md`](docs/governance.md) (full). CI (`.github/workflows/ci.yml`) runs `tool/validate.mjs` on every push and PR — green is the merge gate.
+- **License:** [MIT](LICENSE).
 
 ---
 

@@ -3,9 +3,17 @@
 All notable changes to the Alan Mobile Design System (AMDS) are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/). Versioning: [SemVer](https://semver.org/) — see [`docs/governance.md`](docs/governance.md).
 
-## [1.0.0] — 2026-09-06
+## [1.0.0] — 2026-09-07
 
 First release of the reusable master template.
+
+### Repository hygiene (Phase 0)
+
+- `LICENSE` (MIT) · `package.json` (`npm run validate`) · `CONTRIBUTING.md`.
+- `.github/`: CI workflow (`validate.mjs` + token JSON parse on every push/PR), PR template, issue template + config.
+- `.gitattributes` (LF normalization) · `.editorconfig`.
+- `docs/rfcs/` — decision-record process + template.
+- Pushed to `github.com/alanjp14/alan-mobile-apps-starter-kit`; tagged `v1.0.0`.
 
 ### Repository
 

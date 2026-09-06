@@ -1,0 +1,33 @@
+{
+  "name": "alan-mobile-apps-starter-kit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Alan Mobile Design System (AMDS) — reusable master mobile UI/UX + architecture template for Android & iOS.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alanjp14/alan-mobile-apps-starter-kit.git"
+  },
+  "scripts": {
+    "validate": "node tool/validate.mjs",
+    "tokens:build": "echo \"TODO: wire Style Dictionary — see docs/design-system/theme-architecture.md §3\" && exit 0",
+    "check": "npm run validate"
+  },
+  "keywords": [
+    "design-system",
+    "mobile",
+    "android",
+    "ios",
+    "flutter",
+    "jetpack-compose",
+    "react-native",
+    "swiftui",
+    "design-tokens",
+    "ui-ux",
+    "starter-kit"
+  ]
+}
