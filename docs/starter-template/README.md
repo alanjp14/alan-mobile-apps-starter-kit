@@ -19,6 +19,7 @@
 | [`error-handling-and-logging.md`](error-handling-and-logging.md) | `Result`/`Failure` · global handlers · structured logging · analytics · crash reporting |
 | [`security.md`](security.md) | Transport · tokens · at-rest · authZ · device integrity · privacy |
 | [`testing.md`](testing.md) | The testing pyramid · CI/CD pipeline · gates |
+| [`motion-implementation.md`](motion-implementation.md) | Buttery 60/120fps transitions — per-platform recipes, anti-patterns, how to verify |
 | [`code-style-and-guidelines.md`](code-style-and-guidelines.md) | Universal + Kotlin/Compose + Dart/Flutter + TS/RN style · developer guidelines |
 | [`developer-handoff.md`](developer-handoff.md) | Token pipeline · design→engineering handoff · redlines · QA |
 | [`scalability.md`](scalability.md) | Extending the system · governance at scale · risk register |
