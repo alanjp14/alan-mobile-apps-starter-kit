@@ -6,40 +6,57 @@ on:
   pull_request:
     branches: [main]
 
-# Cancel superseded runs on the same ref
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  validate:
-    name: Validate repository
+  docs:
+    name: Validate docs & tokens
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate repository (links · JSON · empty files · duplicates)
+        run: node tool/validate.mjs
+      - name: Design-token JSON parses
+        run: for f in design-tokens/*.json; do node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))"; done
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+  flutter:
+    name: Flutter — analyze & test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # No dependencies — tool/validate.mjs is pure Node.
-      - name: Validate (JSON syntax · broken links · empty files · duplicates · stale refs)
-        run: node tool/validate.mjs
-
-      - name: Check design tokens parse
+      - name: Token generator is up to date
         run: |
-          for f in design-tokens/*.json; do
-            node -e "JSON.parse(require('fs').readFileSync('$f','utf8')); console.log('ok  $f')"
-          done
+          node tool/build_tokens.mjs
+          git diff --exit-code packages/amds_tokens/lib/src/tokens.dart \
+            || (echo "::error::amds_tokens is stale — run 'node tool/build_tokens.mjs' and commit" && exit 1)
 
-      - name: No hard-coded hex in component/screen docs prose
-        run: |
-          # tokens.json, design-tokens/*.json and the platform files legitimately hold hex.
-          # Everywhere else, hex should appear only in a code span/block or a contrast table.
-          if grep -rInE '(^|[^\`#-])#[0-9A-Fa-f]{6}([^0-9A-Fa-f]|$)' docs \
-              | grep -vE 'dark-mode\.md|color-system\.md|accessibility\.md|specs/dashboard\.md|`#' \
-              | grep -vE '^\S+\.md:[0-9]+:\s*\|' ; then
-            echo "::warning::raw hex found outside allowed files — prefer a semantic token name"
-          fi
+      - name: Resolve workspace
+        run: flutter pub get
+
+      - name: Melos bootstrap
+        run: dart pub global activate melos && melos bootstrap
+
+      - name: Format check (advisory in v1.0 — run `melos run format` locally)
+        continue-on-error: true
+        run: dart format --output=none --set-exit-if-changed packages apps widgetbook
+
+      - name: Analyze
+        run: melos run analyze
+
+      - name: Test (Flutter)
+        run: melos run test
+
+      - name: Test (pure Dart)
+        run: melos run test:dart

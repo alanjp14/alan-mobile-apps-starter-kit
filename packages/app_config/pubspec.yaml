@@ -1,0 +1,18 @@
+name: app_config
+description: AMDS app-level configuration — flavor, environment, feature flags, brand theme.
+version: 1.0.0
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.6.0
+  flutter: ">=3.27.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  amds_tokens:
+    path: ../amds_tokens
+
+dev_dependencies:
+  flutter_lints: ^5.0.0

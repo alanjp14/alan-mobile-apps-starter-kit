@@ -1,0 +1,54 @@
+name: amds
+
+packages:
+  - packages/*
+  - apps/*
+  - widgetbook
+
+command:
+  bootstrap:
+    runPubGetInParallel: true
+
+scripts:
+  analyze:
+    description: Static analysis across the workspace
+    run: dart analyze .
+
+  format:
+    description: Format all Dart
+    run: dart format --set-exit-if-changed .
+
+  test:
+    description: Run Flutter package + app tests
+    run: flutter test
+    packageFilters:
+      dirExists: test
+      flutter: true
+
+  test:dart:
+    description: Run pure-Dart package tests
+    run: dart test
+    packageFilters:
+      dirExists: test
+      flutter: false
+
+  test:golden:
+    description: Update golden files
+    run: flutter test --update-goldens
+    packageFilters:
+      dirExists: test
+      flutter: true
+
+  tokens:
+    description: Regenerate packages/amds_tokens from design-tokens/tokens.json
+    run: node tool/build_tokens.mjs
+
+  gen:
+    description: Run build_runner where configured
+    run: dart run build_runner build --delete-conflicting-outputs
+    packageFilters:
+      dependsOn: build_runner
+
+  ci:
+    description: What CI runs
+    run: melos run analyze && melos run test && melos run test:dart

@@ -7,6 +7,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Versioning: [SemVer](ht
 
 First release of the reusable master template.
 
+### Flutter implementation (Phase 1)
+
+- Dart pub workspace + Melos: `packages/{amds_tokens,amds_core,app_config,amds_ui}` + `apps/starter` + `widgetbook`.
+- **`amds_tokens`** — `AmdsPalette`, `AmdsSpacing/Radius/Size/BorderWidth/Breakpoints`, `AmdsMotion`, `AmdsElevation`, `AmdsTextStyles`, `AmdsOpacity`, `AmdsColors` (light/dark, `copyWith`/`lerp`), `AmdsThemeExt` (`ThemeExtension` + `context.amds`), `AmdsTheme.light()/.dark()` (Material 3). `lib/src/tokens.dart` is **generated** by `tool/build_tokens.mjs` from `design-tokens/tokens.json`.
+- **`amds_core`** (pure Dart) — `Result<T>` / `Failure` union, `AmdsFormatters` (locale + relative time), `Validators` + `PasswordPolicy`. Unit tests.
+- **`app_config`** — `AppConfig` / `Flavor` / `FeatureFlags` / `BrandTheme` (white-label: recolors semantic tokens only).
+- **`amds_ui`** — starter component set: `AmdsButton` (6 variants × 3 sizes, loading, press-spring), `AmdsIconButton`, `AmdsCard`, `AmdsTextField`/`AmdsPasswordField`, `AmdsStatusChip`, `AmdsBadge`, `AmdsAvatar`, `AmdsSectionHeader`, `AmdsBanner`, `AmdsSnackbar`, `AmdsDialogs.confirm`, `AmdsScaffold`, `AmdsAdaptiveNavigation` (bottom nav → rail → drawer), `AmdsLoadingState`/`AmdsEmptyState`/`AmdsErrorState`/`AmdsOfflineBanner`, `AmdsSkeleton`/`AmdsSkeletonList`, and motion (`AmdsPressable`, `AmdsFadeSlideIn`, `AmdsAnimatedCount`, `amdsSharedAxisTransition`) — all reduce-motion + dark-mode + Dynamic-Type aware. Widget tests.
+- **`apps/starter`** — a runnable showcase (theme toggle, components, states, shared-axis transition, text-scale clamp).
+- **`widgetbook`** — dependency-free component gallery (light + dark).
+- CI: added a Flutter job (token-freshness · format · analyze · test).
+- `FLUTTER.md`, `melos.yaml`, `analysis_options.yaml`, `tool/build_tokens.mjs`.
+
 ### Repository hygiene (Phase 0)
 
 - `LICENSE` (MIT) · `package.json` (`npm run validate`) · `CONTRIBUTING.md`.

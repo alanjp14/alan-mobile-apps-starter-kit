@@ -10,8 +10,10 @@ A reusable **UI/UX + architecture master template** for every future `[COMPANY_N
 
 ```bash
 git clone https://github.com/alanjp14/alan-mobile-apps-starter-kit.git
-node tool/validate.mjs      # or: npm run validate
+node tool/validate.mjs      # validate the docs
 ```
+
+**Flutter implementation** (Phase 1): a real monorepo — `amds_tokens` / `amds_core` / `app_config` / `amds_ui` packages + a runnable `apps/starter` showcase + `widgetbook`. See **[`FLUTTER.md`](FLUTTER.md)**.
 
 ---
 

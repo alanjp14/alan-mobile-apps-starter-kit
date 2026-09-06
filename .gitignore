@@ -23,6 +23,33 @@ build/
 .cache/
 coverage/
 
+# ── Flutter / Dart ────────────────────────────────
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+pubspec_overrides.yaml
+**/doc/api/
+*.g.dart.orig
+# generated platform scaffolding (run `flutter create .` in the app dir)
+apps/*/android/
+apps/*/ios/
+apps/*/linux/
+apps/*/macos/
+apps/*/windows/
+apps/*/web/
+widgetbook/android/
+widgetbook/ios/
+widgetbook/linux/
+widgetbook/macos/
+widgetbook/windows/
+widgetbook/web/
+# bundled fonts are dropped in by the team (OFL)
+packages/amds_tokens/fonts/*.ttf
+test/**/failures/
+**/*.log
+
 # ── Exports (generated bundles are not committed;
 #    keep the folder + its README) ─────────────────
 exports/*

@@ -1,0 +1,20 @@
+# Dart pub workspace for the AMDS Flutter starter kit.
+# Requires Dart >= 3.6 (native pub workspaces). Managed with Melos.
+#   dart pub get           # resolves the whole workspace
+#   dart pub global activate melos && melos bootstrap
+name: amds_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - packages/amds_tokens
+  - packages/amds_core
+  - packages/app_config
+  - packages/amds_ui
+  - apps/starter
+  - widgetbook
+
+dev_dependencies:
+  melos: ^6.3.2
