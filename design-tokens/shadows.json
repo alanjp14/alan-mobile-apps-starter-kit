@@ -1,0 +1,30 @@
+{
+  "$name": "AMDS Elevation / Shadow Tokens",
+  "$description": "Convenience view of the shadow section of tokens.json. tokens.json remains authoritative. See docs/design-system/elevation.md.",
+  "$version": "1.0.0",
+
+  "light": {
+    "elevation1": "0 1px 2px rgba(15,23,42,0.06)",
+    "elevation2": "0 2px 4px -1px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.04)",
+    "elevation3": "0 4px 8px -2px rgba(15,23,42,0.10), 0 2px 4px -1px rgba(15,23,42,0.05)",
+    "elevation4": "0 12px 20px -4px rgba(15,23,42,0.12), 0 4px 8px -2px rgba(15,23,42,0.06)",
+    "elevation5": "0 24px 40px -8px rgba(15,23,42,0.16), 0 8px 16px -4px rgba(15,23,42,0.08)"
+  },
+  "dark": {
+    "elevation1": "0 1px 2px rgba(0,0,0,0.40)",
+    "elevation2": "0 2px 4px -1px rgba(0,0,0,0.44), 0 1px 2px rgba(0,0,0,0.32)",
+    "elevation3": "0 4px 8px -2px rgba(0,0,0,0.48), 0 2px 4px -1px rgba(0,0,0,0.36)",
+    "elevation4": "0 12px 20px -4px rgba(0,0,0,0.52), 0 4px 8px -2px rgba(0,0,0,0.40)",
+    "elevation5": "0 24px 40px -8px rgba(0,0,0,0.60), 0 8px 16px -4px rgba(0,0,0,0.44)"
+  },
+  "androidElevationDp": { "elevation1": 1, "elevation2": 3, "elevation3": 6, "elevation4": 12, "elevation5": 24 },
+
+  "usage": {
+    "elevation1": "Resting card, list item raised on scroll, text field",
+    "elevation2": "App bar on scroll-under, bottom nav, hovered/pressed card, chip",
+    "elevation3": "FAB resting, dropdown menu, popover, snackbar",
+    "elevation4": "Bottom sheet, navigation drawer, FAB pressed",
+    "elevation5": "Modal dialog, full-screen overlay panel"
+  },
+  "note": "Default surface state is flat with a 1px border, not a shadow. Dark mode lightens surfaces (slate-900 -> slate-800) instead of shadowing, with a stronger near-black shadow only for true overlays."
+}

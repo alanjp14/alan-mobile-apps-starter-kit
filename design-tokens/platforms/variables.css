@@ -1,0 +1,289 @@
+/* ============================================================================
+   Alan Mobile Design System (AMDS) v1.0
+   CSS Custom Properties - for web previews, Storybook, docs, and hybrid webviews.
+   Generated from tokens/tokens.json. Do not edit by hand.
+   ========================================================================== */
+
+:root {
+  /* --- Brand ramp --------------------------------------------------------- */
+  --amds-green-50:  #F0FDF4;
+  --amds-green-100: #DCFCE7;
+  --amds-green-200: #BBF7D0;
+  --amds-green-300: #86EFAC;
+  --amds-green-400: #4ADE80;
+  --amds-green-500: #22C55E;
+  --amds-green-600: #16A34A;
+  --amds-green-700: #15803D;
+  --amds-green-800: #166534;
+  --amds-green-900: #14532D;
+  --amds-green-950: #052E16;
+
+  /* --- Neutral ramp ------------------------------------------------------- */
+  --amds-neutral-0:    #FFFFFF;
+  --amds-neutral-50:   #F8FAFC;
+  --amds-neutral-100:  #F1F5F9;
+  --amds-neutral-200:  #E2E8F0;
+  --amds-neutral-300:  #CBD5E1;
+  --amds-neutral-400:  #94A3B8;
+  --amds-neutral-500:  #64748B;
+  --amds-neutral-600:  #475569;
+  --amds-neutral-700:  #334155;
+  --amds-neutral-800:  #1E293B;
+  --amds-neutral-900:  #0F172A;
+  --amds-neutral-950:  #020617;
+
+  /* --- Semantic ramps --------------------------------------------------- */
+  --amds-amber-500: #F59E0B;
+  --amds-amber-600: #D97706;
+  --amds-red-500:   #EF4444;
+  --amds-red-600:   #DC2626;
+  --amds-sky-500:   #0EA5E9;
+  --amds-sky-600:   #0284C7;
+
+  /* --- Semantic theme aliases (LIGHT) --------------------------------- */
+  --amds-primary:              var(--amds-green-600);
+  --amds-primary-hover:        var(--amds-green-700);
+  --amds-primary-pressed:      var(--amds-green-800);
+  --amds-primary-container:    var(--amds-green-100);
+  --amds-on-primary:           var(--amds-neutral-0);
+  --amds-on-primary-container: var(--amds-green-900);
+  --amds-secondary:            var(--amds-green-500);
+
+  --amds-background:        var(--amds-neutral-50);
+  --amds-on-background:     var(--amds-neutral-900);
+  --amds-surface:          var(--amds-neutral-0);
+  --amds-surface-variant:  var(--amds-neutral-100);
+  --amds-on-surface:       var(--amds-neutral-900);
+  --amds-on-surface-variant: var(--amds-neutral-500);
+
+  --amds-text-primary:    var(--amds-neutral-900);
+  --amds-text-secondary:  var(--amds-neutral-500);
+  --amds-text-tertiary:   var(--amds-neutral-400);
+  --amds-text-disabled:   var(--amds-neutral-300);
+  --amds-text-on-color:   var(--amds-neutral-0);
+  --amds-text-link:       var(--amds-green-700);
+
+  --amds-border:          var(--amds-neutral-200);
+  --amds-border-strong:   var(--amds-neutral-300);
+  --amds-border-focus:    var(--amds-green-600);
+  --amds-divider:         var(--amds-neutral-200);
+
+  --amds-success:              var(--amds-green-600);
+  --amds-success-container:    var(--amds-green-50);
+  --amds-warning:              var(--amds-amber-600);
+  --amds-warning-container:    #FFFBEB;
+  --amds-danger:               var(--amds-red-600);
+  --amds-danger-container:     #FEF2F2;
+  --amds-info:                 var(--amds-sky-600);
+  --amds-info-container:       #F0F9FF;
+
+  --amds-overlay-scrim:   rgba(15, 23, 42, 0.48);
+  --amds-skeleton-base:   var(--amds-neutral-200);
+  --amds-skeleton-sheen:  var(--amds-neutral-100);
+
+  /* --- Typography ------------------------------------------------------- */
+  --amds-font-sans: "Inter", "SF Pro Text", "Roboto", system-ui, sans-serif;
+  --amds-font-mono: "JetBrains Mono", "SF Mono", "Roboto Mono", monospace;
+
+  --amds-weight-regular: 400;
+  --amds-weight-medium: 500;
+  --amds-weight-semibold: 600;
+  --amds-weight-bold: 700;
+
+  /* role: size / line-height / weight / tracking */
+  --amds-display-lg:  700 36px/44px var(--amds-font-sans);
+  --amds-display-md:  700 32px/40px var(--amds-font-sans);
+  --amds-display-sm:  700 28px/36px var(--amds-font-sans);
+  --amds-heading-lg:  600 24px/32px var(--amds-font-sans);
+  --amds-heading-md:  600 20px/28px var(--amds-font-sans);
+  --amds-heading-sm:  600 18px/26px var(--amds-font-sans);
+  --amds-title-lg:    600 16px/24px var(--amds-font-sans);
+  --amds-title-md:    500 14px/20px var(--amds-font-sans);
+  --amds-body-lg:     400 16px/24px var(--amds-font-sans);
+  --amds-body-md:     400 14px/20px var(--amds-font-sans);
+  --amds-body-sm:     400 13px/18px var(--amds-font-sans);
+  --amds-label:       500 14px/16px var(--amds-font-sans);
+  --amds-label-sm:    500 12px/16px var(--amds-font-sans);
+  --amds-caption:     400 12px/16px var(--amds-font-sans);
+  --amds-overline:    600 11px/16px var(--amds-font-sans);
+
+  --amds-tracking-tight: -0.02em;
+  --amds-tracking-snug: -0.01em;
+  --amds-tracking-normal: 0em;
+  --amds-tracking-wide: 0.02em;
+  --amds-tracking-overline: 0.08em;
+
+  /* --- Spacing (4pt base) --------------------------------------------- */
+  --amds-space-0: 0px;
+  --amds-space-1: 4px;
+  --amds-space-2: 8px;
+  --amds-space-3: 12px;
+  --amds-space-4: 16px;
+  --amds-space-5: 20px;
+  --amds-space-6: 24px;
+  --amds-space-8: 32px;
+  --amds-space-10: 40px;
+  --amds-space-12: 48px;
+  --amds-space-16: 64px;
+
+  /* --- Radius --------------------------------------------------------- */
+  --amds-radius-xs: 4px;
+  --amds-radius-sm: 8px;
+  --amds-radius-md: 12px;
+  --amds-radius-lg: 16px;
+  --amds-radius-xl: 24px;
+  --amds-radius-2xl: 32px;
+  --amds-radius-full: 9999px;
+
+  /* --- Border width -------------------------------------------------- */
+  --amds-border-hairline: 1px;
+  --amds-border-thin: 1.5px;
+  --amds-border-thick: 2px;
+  --amds-border-focus-width: 2px;
+
+  /* --- Sizing ------------------------------------------------------- */
+  --amds-touch-min: 44px;
+  --amds-touch-comfortable: 48px;
+  --amds-icon-xs: 16px;
+  --amds-icon-sm: 20px;
+  --amds-icon-md: 24px;
+  --amds-icon-lg: 32px;
+  --amds-icon-xl: 40px;
+  --amds-app-bar-height: 56px;
+  --amds-bottom-nav-height: 64px;
+  --amds-fab-size: 56px;
+  --amds-field-height: 48px;
+
+  /* --- Elevation / shadow ------------------------------------------ */
+  --amds-elevation-1: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --amds-elevation-2: 0 2px 4px -1px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --amds-elevation-3: 0 4px 8px -2px rgba(15, 23, 42, 0.10), 0 2px 4px -1px rgba(15, 23, 42, 0.05);
+  --amds-elevation-4: 0 12px 20px -4px rgba(15, 23, 42, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.06);
+  --amds-elevation-5: 0 24px 40px -8px rgba(15, 23, 42, 0.16), 0 8px 16px -4px rgba(15, 23, 42, 0.08);
+
+  /* --- z-index --------------------------------------------------- */
+  --amds-z-raised: 10;
+  --amds-z-sticky: 100;
+  --amds-z-app-bar: 200;
+  --amds-z-drawer: 300;
+  --amds-z-bottom-sheet: 400;
+  --amds-z-modal: 500;
+  --amds-z-toast: 600;
+  --amds-z-tooltip: 700;
+
+  /* --- Motion --------------------------------------------------- */
+  --amds-duration-instant: 100ms;
+  --amds-duration-fast: 150ms;
+  --amds-duration-base: 200ms;
+  --amds-duration-moderate: 250ms;
+  --amds-duration-slow: 300ms;
+  --amds-duration-slower: 400ms;
+
+  --amds-ease-standard: cubic-bezier(0.2, 0.0, 0.0, 1.0);
+  --amds-ease-decelerate: cubic-bezier(0.0, 0.0, 0.0, 1.0);
+  --amds-ease-accelerate: cubic-bezier(0.3, 0.0, 1.0, 1.0);
+  --amds-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1.0);
+}
+
+/* ============================================================================
+   DARK THEME
+   Applied via [data-theme="dark"] or the system preference. Both are provided;
+   an explicit data-theme always wins.
+   ========================================================================== */
+
+:root[data-theme="dark"] {
+  --amds-primary:              var(--amds-green-400);
+  --amds-primary-hover:        var(--amds-green-300);
+  --amds-primary-pressed:      var(--amds-green-200);
+  --amds-primary-container:    var(--amds-green-900);
+  --amds-on-primary:           var(--amds-green-950);
+  --amds-on-primary-container: var(--amds-green-100);
+  --amds-secondary:            var(--amds-green-500);
+
+  --amds-background:        var(--amds-neutral-950);
+  --amds-on-background:     var(--amds-neutral-50);
+  --amds-surface:          var(--amds-neutral-900);
+  --amds-surface-variant:  var(--amds-neutral-800);
+  --amds-on-surface:       var(--amds-neutral-50);
+  --amds-on-surface-variant: var(--amds-neutral-400);
+
+  --amds-text-primary:    var(--amds-neutral-50);
+  --amds-text-secondary:  var(--amds-neutral-400);
+  --amds-text-tertiary:   var(--amds-neutral-500);
+  --amds-text-disabled:   var(--amds-neutral-700);
+  --amds-text-on-color:   var(--amds-neutral-950);
+  --amds-text-link:       var(--amds-green-400);
+
+  --amds-border:          var(--amds-neutral-700);
+  --amds-border-strong:   var(--amds-neutral-600);
+  --amds-border-focus:    var(--amds-green-400);
+  --amds-divider:         var(--amds-neutral-800);
+
+  --amds-success:              var(--amds-green-400);
+  --amds-success-container:    rgba(34, 197, 94, 0.16);
+  --amds-warning:              #FBBF24;
+  --amds-warning-container:    rgba(245, 158, 11, 0.16);
+  --amds-danger:               #F87171;
+  --amds-danger-container:     rgba(239, 68, 68, 0.16);
+  --amds-info:                 #38BDF8;
+  --amds-info-container:       rgba(14, 165, 233, 0.16);
+
+  --amds-overlay-scrim:   rgba(2, 6, 23, 0.64);
+  --amds-skeleton-base:   var(--amds-neutral-800);
+  --amds-skeleton-sheen:  var(--amds-neutral-700);
+
+  --amds-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.40);
+  --amds-elevation-2: 0 2px 4px -1px rgba(0, 0, 0, 0.44), 0 1px 2px rgba(0, 0, 0, 0.32);
+  --amds-elevation-3: 0 4px 8px -2px rgba(0, 0, 0, 0.48), 0 2px 4px -1px rgba(0, 0, 0, 0.36);
+  --amds-elevation-4: 0 12px 20px -4px rgba(0, 0, 0, 0.52), 0 4px 8px -2px rgba(0, 0, 0, 0.40);
+  --amds-elevation-5: 0 24px 40px -8px rgba(0, 0, 0, 0.60), 0 8px 16px -4px rgba(0, 0, 0, 0.44);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --amds-primary:              var(--amds-green-400);
+    --amds-primary-hover:        var(--amds-green-300);
+    --amds-primary-pressed:      var(--amds-green-200);
+    --amds-primary-container:    var(--amds-green-900);
+    --amds-on-primary:           var(--amds-green-950);
+    --amds-on-primary-container: var(--amds-green-100);
+
+    --amds-background:        var(--amds-neutral-950);
+    --amds-on-background:     var(--amds-neutral-50);
+    --amds-surface:          var(--amds-neutral-900);
+    --amds-surface-variant:  var(--amds-neutral-800);
+    --amds-on-surface:       var(--amds-neutral-50);
+    --amds-on-surface-variant: var(--amds-neutral-400);
+
+    --amds-text-primary:    var(--amds-neutral-50);
+    --amds-text-secondary:  var(--amds-neutral-400);
+    --amds-text-tertiary:   var(--amds-neutral-500);
+    --amds-text-disabled:   var(--amds-neutral-700);
+    --amds-text-link:       var(--amds-green-400);
+
+    --amds-border:          var(--amds-neutral-700);
+    --amds-border-strong:   var(--amds-neutral-600);
+    --amds-border-focus:    var(--amds-green-400);
+    --amds-divider:         var(--amds-neutral-800);
+
+    --amds-success:  var(--amds-green-400);
+    --amds-warning:  #FBBF24;
+    --amds-danger:   #F87171;
+    --amds-info:     #38BDF8;
+
+    --amds-overlay-scrim:   rgba(2, 6, 23, 0.64);
+    --amds-skeleton-base:   var(--amds-neutral-800);
+    --amds-skeleton-sheen:  var(--amds-neutral-700);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --amds-duration-instant: 1ms;
+    --amds-duration-fast: 1ms;
+    --amds-duration-base: 1ms;
+    --amds-duration-moderate: 1ms;
+    --amds-duration-slow: 1ms;
+    --amds-duration-slower: 1ms;
+  }
+}

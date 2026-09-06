@@ -1,0 +1,43 @@
+{
+  "$name": "AMDS Spacing Tokens",
+  "$description": "Convenience view of the spacing/grid/size section of tokens.json. tokens.json remains authoritative. See docs/design-system/spacing.md.",
+  "$version": "1.0.0",
+
+  "space": {
+    "0": 0, "1": 4, "2": 8, "3": 12, "4": 16, "5": 20,
+    "6": 24, "8": 32, "10": 40, "12": 48, "16": 64
+  },
+  "scaleValues": [4, 8, 12, 16, 20, 24, 32, 40, 48, 64],
+
+  "screenMargin": { "phone": 16, "tabletPortrait": 24, "tabletLandscape": 32 },
+
+  "borderWidth": { "none": 0, "hairline": 1, "thin": 1.5, "thick": 2, "focus": 2 },
+
+  "size": {
+    "touchTargetMin": 44,
+    "touchTargetComfortable": 48,
+    "iconXs": 16, "iconSm": 20, "iconMd": 24, "iconLg": 32, "iconXl": 40,
+    "avatarXs": 24, "avatarSm": 32, "avatarMd": 40, "avatarLg": 56, "avatarXl": 80,
+    "buttonHeightSm": 36, "buttonHeightMd": 44, "buttonHeightLg": 52,
+    "fieldHeight": 48, "appBarHeight": 56, "bottomNavHeight": 64,
+    "fabSize": 56, "fabSizeSmall": 40
+  },
+
+  "breakpoint": {
+    "phoneSmall": 320, "phoneMedium": 375, "phoneLarge": 430,
+    "tabletPortrait": 600, "tabletLandscape": 905, "desktop": 1240
+  },
+
+  "grid": {
+    "phone": { "columns": 4, "margin": 16, "gutter": 16 },
+    "tabletPortrait": { "columns": 8, "margin": 24, "gutter": 24 },
+    "tabletLandscape": { "columns": 12, "margin": 32, "gutter": 24 }
+  },
+
+  "contentMaxWidth": { "readingColumn": 720, "tabletPortrait": 640, "tabletLandscape": 1040 },
+
+  "density": {
+    "comfortable": { "listRow": [56, 72, 88], "cellPaddingX": 16, "cellPaddingY": 12 },
+    "compact": { "listRow": [44, 56], "cellPaddingX": 12, "cellPaddingY": 8 }
+  }
+}

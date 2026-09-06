@@ -1,0 +1,33 @@
+{
+  "$name": "AMDS Typography Tokens",
+  "$description": "Convenience view of the typography section of tokens.json. tokens.json remains authoritative. See docs/design-system/typography.md.",
+  "$version": "1.0.0",
+
+  "family": {
+    "sans": ["Inter", "SF Pro Text", "Roboto", "system-ui", "sans-serif"],
+    "mono": ["JetBrains Mono", "SF Mono", "Roboto Mono", "monospace"],
+    "numeric": ["Inter", "SF Pro Display", "Roboto", "sans-serif"]
+  },
+
+  "weight": { "regular": 400, "medium": 500, "semibold": 600, "bold": 700 },
+
+  "scale": {
+    "displayLarge":  { "fontFamily": "{family.sans}", "fontSize": 36, "lineHeight": 44, "fontWeight": 700, "letterSpacing": "-0.02em", "usage": "Splash, marketing, empty-state hero" },
+    "displayMedium": { "fontFamily": "{family.sans}", "fontSize": 32, "lineHeight": 40, "fontWeight": 700, "letterSpacing": "-0.02em", "usage": "Onboarding titles" },
+    "displaySmall":  { "fontFamily": "{family.sans}", "fontSize": 28, "lineHeight": 36, "fontWeight": 700, "letterSpacing": "-0.01em", "usage": "Page hero, big number on a KPI card" },
+    "headingLarge":  { "fontFamily": "{family.sans}", "fontSize": 24, "lineHeight": 32, "fontWeight": 600, "letterSpacing": "-0.01em", "usage": "Screen title (large app bar)" },
+    "headingMedium": { "fontFamily": "{family.sans}", "fontSize": 20, "lineHeight": 28, "fontWeight": 600, "letterSpacing": "-0.01em", "usage": "Section header, dialog title" },
+    "headingSmall":  { "fontFamily": "{family.sans}", "fontSize": 18, "lineHeight": 26, "fontWeight": 600, "letterSpacing": "0", "usage": "Card title, sub-section" },
+    "titleLarge":    { "fontFamily": "{family.sans}", "fontSize": 16, "lineHeight": 24, "fontWeight": 600, "letterSpacing": "0", "usage": "List item title, app bar title" },
+    "titleMedium":   { "fontFamily": "{family.sans}", "fontSize": 14, "lineHeight": 20, "fontWeight": 500, "letterSpacing": "0.005em", "usage": "Dense list title, tab label" },
+    "bodyLarge":     { "fontFamily": "{family.sans}", "fontSize": 16, "lineHeight": 24, "fontWeight": 400, "letterSpacing": "0", "usage": "Primary reading text, field input" },
+    "bodyMedium":    { "fontFamily": "{family.sans}", "fontSize": 14, "lineHeight": 20, "fontWeight": 400, "letterSpacing": "0", "usage": "Default body, secondary text" },
+    "bodySmall":     { "fontFamily": "{family.sans}", "fontSize": 13, "lineHeight": 18, "fontWeight": 400, "letterSpacing": "0.005em", "usage": "Dense secondary text, table cells" },
+    "label":         { "fontFamily": "{family.sans}", "fontSize": 14, "lineHeight": 16, "fontWeight": 500, "letterSpacing": "0.01em", "usage": "Buttons, chips, field labels" },
+    "labelSmall":    { "fontFamily": "{family.sans}", "fontSize": 12, "lineHeight": 16, "fontWeight": 500, "letterSpacing": "0.02em", "usage": "Badge, small button, helper" },
+    "caption":       { "fontFamily": "{family.sans}", "fontSize": 12, "lineHeight": 16, "fontWeight": 400, "letterSpacing": "0.01em", "usage": "Timestamps, metadata, footnotes" },
+    "overline":      { "fontFamily": "{family.sans}", "fontSize": 11, "lineHeight": 16, "fontWeight": 600, "letterSpacing": "0.08em", "usage": "ALL-CAPS section kicker, eyebrow" }
+  },
+
+  "scaling": { "min": 0.85, "max": 2.0, "note": "UI must remain usable across this range; test 100/130/200% + Bold Text." }
+}

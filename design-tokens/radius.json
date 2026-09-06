@@ -1,0 +1,25 @@
+{
+  "$name": "AMDS Border Radius Tokens",
+  "$description": "Convenience view of the radius section of tokens.json. tokens.json remains authoritative. See docs/design-system/radius.md.",
+  "$version": "1.0.0",
+
+  "radius": {
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "full": 9999
+  },
+
+  "usage": {
+    "xs": "Tag, checkbox, small chip, nested inner elements, image thumb",
+    "sm": "Input field, small button, menu item, snackbar",
+    "md": "Default. Button, compact card, dropdown, tooltip, segmented control",
+    "lg": "Standard card, KPI card, dialog on phone, list container",
+    "xl": "Bottom sheet top corners, modal, large feature card",
+    "2xl": "Marketing card, onboarding illustration frame",
+    "full": "Pill button, avatar, FAB, switch track, badge dot, pill chips"
+  }
+}
