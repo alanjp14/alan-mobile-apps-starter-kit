@@ -5,6 +5,8 @@
 import 'package:app_config/app_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../features/auth/data/mock_auth_repository.dart';
+import '../features/auth/domain/auth_repository.dart';
 import '../features/items/data/mock_items_repository.dart';
 import '../features/items/domain/items_repository.dart';
 
@@ -13,8 +15,12 @@ final appConfigProvider = Provider<AppConfig>(
   (ref) => throw UnimplementedError('appConfigProvider must be overridden'),
 );
 
-/// Swap [MockItemsRepository] for an HTTP-backed impl when the API is ready —
-/// nothing above the domain interface changes.
+/// Swap the mock impls for HTTP-backed ones when the API is ready — nothing
+/// above the domain interfaces changes.
+final authRepositoryProvider = Provider<AuthRepository>(
+  (ref) => MockAuthRepository(),
+);
+
 final itemsRepositoryProvider = Provider<ItemsRepository>(
   (ref) => MockItemsRepository(),
 );

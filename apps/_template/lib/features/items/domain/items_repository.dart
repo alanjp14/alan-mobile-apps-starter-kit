@@ -10,5 +10,9 @@ abstract interface class ItemsRepository {
 
   Future<Result<Item>> getById(String id);
 
-  Future<Result<Item>> setArchived(String id, {required bool archived});
+  Future<Result<Item>> create(ItemDraft draft);
+
+  Future<Result<Item>> update(String id, {String? title, String? subtitle});
+
+  Future<Result<Item>> setStatus(String id, ItemStatus status);
 }

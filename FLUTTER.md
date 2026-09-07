@@ -107,19 +107,21 @@ cp -r apps/_template apps/my_app
 #   → rename `name:` in apps/my_app/pubspec.yaml
 #   → add `apps/my_app` to the workspace list in the root pubspec.yaml
 #   → replace the [PLACEHOLDER] strings, drop in a BrandTheme + AppConfig
-#   → delete the `items` feature once your first real feature lands
+#   → wire your real AuthRepository; delete the `items` feature once yours lands
 flutter pub get && cd apps/my_app && flutter test
 ```
 
 `apps/_template` wires the architecture from [`docs/starter-template/`](docs/starter-template/README.md):
-Riverpod composition root (`lib/core/di.dart`), a central `go_router` table
-(`lib/app/router.dart`), and a worked `items` feature (domain / data /
-presentation) that exercises every state — loading, empty, error, offline — on a
-`MockItemsRepository`. Swap the mock for an HTTP impl; nothing above the
-`ItemsRepository` interface changes.
+a Riverpod composition root (`lib/core/di.dart`), a central `go_router` table
+with an **auth-gate redirect** (`lib/app/router.dart`), and two worked features —
+`auth` (validated login form + `MockAuthRepository`) and `items` (list · detail ·
+create · edit · approve · archive, every state: loading / empty / error /
+offline). `test/flows_test.dart` drives the whole app through the **3 core e2e
+flows** (login→dashboard→approve · list→edit→save · create via form). Swap a mock
+for an HTTP impl; nothing above the repository interfaces changes.
 
 ## Status — Phase 1
 
-**Done:** `amds_tokens` (complete), `amds_core` (complete), `amds_motion` (route transitions · entrances · micro-interactions · switchers · `AmdsMotionScope`), `app_config` (complete), `amds_ui` (~60 components — actions · inputs · content · navigation · **data display** (`AmdsDataTable`, chart frame, `AmdsSparkline`, pagination) · feedback · loading · state, all token-driven + dark-mode + a11y), `apps/starter`, `apps/_template` (Riverpod + go_router + AMDS route transitions + repository layer), `widgetbook`, the token generator, CI. Verified against Flutter/Dart SDK: `dart analyze` clean, all package/app tests green (amds_motion 9, amds_ui 25, amds_core 10, apps/starter 2, apps/_template 5).
+**Done:** `amds_tokens` (complete), `amds_core` (complete), `amds_motion` (route transitions · entrances · micro-interactions · switchers · `AmdsMotionScope`), `app_config` (complete), `amds_ui` (~60 components — actions · inputs (with `Form` validation) · content · navigation · **data display** (`AmdsDataTable`, chart frame, `AmdsSparkline`, pagination) · feedback · loading · state, all token-driven + dark-mode + a11y), `apps/starter`, `apps/_template` (Riverpod + go_router auth gate + 2 features + the 3 e2e flows), `widgetbook`, the token generator, CI. Verified against Flutter/Dart SDK: `dart analyze` clean, all package/app tests green (amds_motion 9, amds_ui 26, amds_core 10, apps/starter 2, apps/_template 11).
 
-**Next:** composite/screen-level pieces (Filter Bar, Sort Sheet, Export flow); golden tests per component (light/dark); the 3 core e2e flows.
+**Next:** composite/screen-level pieces (Filter Bar, Sort Sheet, Export flow); golden tests per component (light/dark).

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/router.dart';
 import '../../../app/theme_controller.dart';
+import '../../auth/presentation/auth_controller.dart';
 import '../domain/item.dart';
 import 'items_controller.dart';
 
@@ -17,8 +18,7 @@ class ItemsListScreen extends ConsumerWidget {
     final items = ref.watch(itemsControllerProvider);
     final fmt = AmdsFormatters();
 
-    return AmdsScaffold(
-      scrollable: false,
+    return Scaffold(
       appBar: AppBar(
         title: const Text('[MODULE_NAME]'),
         actions: [
@@ -29,27 +29,50 @@ class ItemsListScreen extends ConsumerWidget {
                 : Icons.dark_mode_outlined),
             onPressed: () => ref.read(themeModeProvider.notifier).toggle(),
           ),
+          IconButton(
+            tooltip: 'Sign out',
+            icon: const Icon(Icons.logout),
+            onPressed: () =>
+                ref.read(authControllerProvider.notifier).signOut(),
+          ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () => ref.read(itemsControllerProvider.notifier).refresh(),
-        child: switch (items) {
-          AsyncData(:final value) when value.isEmpty => const _Empty(),
-          AsyncData(:final value) => _List(items: value, fmt: fmt),
-          AsyncError(:final error) => _Error(
-              failure: error is FailureException ? error.failure : null,
-              onRetry: () =>
-                  ref.read(itemsControllerProvider.notifier).refresh(),
-            ),
-          _ => const Padding(
-              padding: EdgeInsets.only(top: AmdsSpacing.md),
-              child: AmdsSkeletonList(rows: 6),
-            ),
-        },
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.push(Routes.itemNew),
+        icon: const Icon(Icons.add),
+        label: const Text('New'),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AmdsSpacing.md),
+          child: RefreshIndicator(
+            onRefresh: () =>
+                ref.read(itemsControllerProvider.notifier).refresh(),
+            child: switch (items) {
+              AsyncData(:final value) when value.isEmpty => const _Empty(),
+              AsyncData(:final value) => _List(items: value, fmt: fmt),
+              AsyncError(:final error) => _Error(
+                  failure: error is FailureException ? error.failure : null,
+                  onRetry: () =>
+                      ref.read(itemsControllerProvider.notifier).refresh(),
+                ),
+              _ => const Padding(
+                  padding: EdgeInsets.only(top: AmdsSpacing.md),
+                  child: AmdsSkeletonList(rows: 6),
+                ),
+            },
+          ),
+        ),
       ),
     );
   }
 }
+
+({String label, AmdsStatusTone tone}) _statusChip(ItemStatus s) => switch (s) {
+      ItemStatus.pending => (label: 'Pending', tone: AmdsStatusTone.warning),
+      ItemStatus.approved => (label: 'Approved', tone: AmdsStatusTone.success),
+      ItemStatus.archived => (label: 'Archived', tone: AmdsStatusTone.neutral),
+    };
 
 class _List extends StatelessWidget {
   const _List({required this.items, required this.fmt});
@@ -67,12 +90,13 @@ class _List extends StatelessWidget {
       separatorBuilder: (_, __) => const SizedBox(height: AmdsSpacing.sm),
       itemBuilder: (context, i) {
         final item = items[i];
+        final chip = _statusChip(item.status);
         return AmdsFadeSlideIn(
           index: i,
           child: AmdsCard(
             onTap: () => context.push(Routes.itemDetail(item.id)),
             semanticLabel:
-                '${item.title}, updated ${fmt.relative(item.updatedAt)}',
+                '${item.title}, ${chip.label}, updated ${fmt.relative(item.updatedAt)}',
             child: Row(
               children: [
                 AmdsAvatar(name: item.title),
@@ -82,21 +106,25 @@ class _List extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(item.title, style: context.text.titleMedium),
-                      const SizedBox(height: 2),
-                      Text(
-                        item.subtitle,
-                        style: AmdsTextStyles.bodySmall
-                            .copyWith(color: c.textSecondary),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          AmdsStatusChip(chip.label, tone: chip.tone),
+                          const SizedBox(width: AmdsSpacing.sm),
+                          Flexible(
+                            child: Text(
+                              item.subtitle,
+                              style: AmdsTextStyles.bodySmall
+                                  .copyWith(color: c.textSecondary),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: AmdsSpacing.sm),
-                Text(fmt.relative(item.updatedAt),
-                    style:
-                        AmdsTextStyles.caption.copyWith(color: c.textTertiary)),
               ],
             ),
           ),
@@ -114,7 +142,7 @@ class _Empty extends StatelessWidget {
           SizedBox(height: 120),
           AmdsEmptyState(
             title: 'No [DATA_NAME] yet',
-            body: 'Items you create will show up here.',
+            body: 'Tap “New” to create your first one.',
             icon: Icons.inbox_outlined,
           ),
         ],

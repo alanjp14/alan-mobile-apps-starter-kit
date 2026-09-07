@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/di.dart';
 import '../domain/item.dart';
+import '../domain/items_repository.dart';
 
 class ItemsController extends AsyncNotifier<List<Item>> {
   @override
@@ -26,14 +27,33 @@ class ItemsController extends AsyncNotifier<List<Item>> {
     state = await AsyncValue.guard(() => _load(forceRefresh: true));
   }
 
-  Future<void> archive(String id) async {
-    final repo = ref.read(itemsRepositoryProvider);
-    final result = await repo.setArchived(id, archived: true);
-    if (result.isSuccess) {
-      state = AsyncData(
-        (state.valueOrNull ?? const []).where((it) => it.id != id).toList(),
+  /// Returns null on success or a user-facing message on failure.
+  Future<String?> create(ItemDraft draft) => _mutate(
+        (repo) => repo.create(draft),
       );
-    }
+
+  Future<String?> edit(String id, {String? title, String? subtitle}) => _mutate(
+        (repo) => repo.update(id, title: title, subtitle: subtitle),
+      );
+
+  Future<String?> approve(String id) =>
+      _mutate((repo) => repo.setStatus(id, ItemStatus.approved));
+
+  Future<String?> archive(String id) =>
+      _mutate((repo) => repo.setStatus(id, ItemStatus.archived));
+
+  Future<String?> _mutate(
+    Future<Result<Item>> Function(ItemsRepository repo) op,
+  ) async {
+    final repo = ref.read(itemsRepositoryProvider);
+    final result = await op(repo);
+    return result.fold(
+      onSuccess: (_) {
+        ref.invalidateSelf();
+        return null;
+      },
+      onFailure: (f) => f.message,
+    );
   }
 }
 
@@ -49,10 +69,12 @@ class FailureException implements Exception {
 final itemsControllerProvider =
     AsyncNotifierProvider<ItemsController, List<Item>>(ItemsController.new);
 
-/// Single-item read for the detail route. Throws [FailureException] on failure
-/// so the screen renders the matching AMDS state.
+/// Single-item read for the detail / edit routes. Throws [FailureException] on
+/// failure so the screen renders the matching AMDS state.
 final itemByIdProvider = FutureProvider.family<Item, String>((ref, id) async {
-  final result = await ref.watch(itemsRepositoryProvider).getById(id);
+  // depend on the list so an edit/approve refreshes the detail too
+  ref.watch(itemsControllerProvider);
+  final result = await ref.read(itemsRepositoryProvider).getById(id);
   return result.fold(
     onSuccess: (item) => item,
     onFailure: (f) => throw FailureException(f),

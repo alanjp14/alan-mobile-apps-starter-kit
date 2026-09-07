@@ -29,6 +29,9 @@ class AmdsTextField extends StatelessWidget {
     this.suffix,
     this.autofocus = false,
     this.focusNode,
+    this.validator,
+    this.autovalidateMode,
+    this.onFieldSubmitted,
     super.key,
   });
 
@@ -52,6 +55,12 @@ class AmdsTextField extends StatelessWidget {
   final Widget? suffix;
   final bool autofocus;
   final FocusNode? focusNode;
+
+  /// Returns an error string, or null when valid. Runs inside an enclosing
+  /// [Form]. Compose with `Validators.all([...])` from `amds_core`.
+  final String? Function(String value)? validator;
+  final AutovalidateMode? autovalidateMode;
+  final ValueChanged<String>? onFieldSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -82,10 +91,11 @@ class AmdsTextField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AmdsSpacing.xxs),
-        TextField(
+        TextFormField(
           controller: controller,
           focusNode: focusNode,
           onChanged: onChanged,
+          onFieldSubmitted: onFieldSubmitted,
           enabled: enabled,
           readOnly: readOnly,
           obscureText: obscureText,
@@ -96,6 +106,8 @@ class AmdsTextField extends StatelessWidget {
           autofillHints: autofillHints,
           inputFormatters: inputFormatters,
           autofocus: autofocus,
+          autovalidateMode: autovalidateMode,
+          validator: validator == null ? null : (v) => validator!(v ?? ''),
           style: AmdsTextStyles.bodyLarge.copyWith(color: c.textPrimary),
           decoration: InputDecoration(
             hintText: hint,
@@ -103,6 +115,7 @@ class AmdsTextField extends StatelessWidget {
                 ? Icon(prefixIcon, size: AmdsSize.iconSm)
                 : null,
             suffixIcon: suffix,
+            // an explicit `error` prop wins; otherwise the validator drives it
             errorText: hasError ? error : null,
             helperText: hasError ? null : helper,
             counterText: '',
@@ -124,6 +137,8 @@ class AmdsPasswordField extends StatefulWidget {
     this.required = false,
     this.autofillHint = AutofillHints.password,
     this.textInputAction,
+    this.validator,
+    this.onFieldSubmitted,
     super.key,
   });
 
@@ -135,6 +150,8 @@ class AmdsPasswordField extends StatefulWidget {
   final bool required;
   final String autofillHint;
   final TextInputAction? textInputAction;
+  final String? Function(String value)? validator;
+  final ValueChanged<String>? onFieldSubmitted;
 
   @override
   State<AmdsPasswordField> createState() => _AmdsPasswordFieldState();
@@ -149,6 +166,7 @@ class _AmdsPasswordFieldState extends State<AmdsPasswordField> {
       label: widget.label,
       controller: widget.controller,
       onChanged: widget.onChanged,
+      onFieldSubmitted: widget.onFieldSubmitted,
       helper: widget.helper,
       error: widget.error,
       required: widget.required,
@@ -156,6 +174,7 @@ class _AmdsPasswordFieldState extends State<AmdsPasswordField> {
       keyboardType: TextInputType.visiblePassword,
       textInputAction: widget.textInputAction,
       autofillHints: [widget.autofillHint],
+      validator: widget.validator,
       suffix: IconButton(
         icon: Icon(
             _obscured

@@ -1,36 +1,31 @@
 import 'package:amds_core/amds_core.dart';
 import 'package:app_template/core/di.dart';
+import 'package:app_template/features/items/data/mock_items_repository.dart';
 import 'package:app_template/features/items/domain/item.dart';
 import 'package:app_template/features/items/domain/items_repository.dart';
 import 'package:app_template/features/items/presentation/items_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class _FakeRepo implements ItemsRepository {
-  _FakeRepo(this._result);
-  final Result<List<Item>> _result;
-  int listCalls = 0;
+/// A repo that always fails `list()` — for the error-mapping test.
+class _FailingRepo implements ItemsRepository {
+  const _FailingRepo(this.failure);
+  final Failure failure;
 
   @override
-  Future<Result<List<Item>>> list({bool forceRefresh = false}) async {
-    listCalls++;
-    return _result;
-  }
-
+  Future<Result<List<Item>>> list({bool forceRefresh = false}) async =>
+      Result.failure(failure);
   @override
-  Future<Result<Item>> getById(String id) async =>
-      const Result.failure(NotFoundFailure());
-
+  Future<Result<Item>> getById(String id) async => Result.failure(failure);
   @override
-  Future<Result<Item>> setArchived(String id, {required bool archived}) async {
-    final it = Item(
-        id: id,
-        title: 't',
-        subtitle: 's',
-        updatedAt: DateTime(2026),
-        archived: archived);
-    return Result.success(it);
-  }
+  Future<Result<Item>> create(ItemDraft draft) async => Result.failure(failure);
+  @override
+  Future<Result<Item>> update(String id,
+          {String? title, String? subtitle}) async =>
+      Result.failure(failure);
+  @override
+  Future<Result<Item>> setStatus(String id, ItemStatus status) async =>
+      Result.failure(failure);
 }
 
 ProviderContainer _container(ItemsRepository repo) {
@@ -42,18 +37,15 @@ ProviderContainer _container(ItemsRepository repo) {
 }
 
 void main() {
-  final sample = [
-    Item(id: 'a', title: 'A', subtitle: '-', updatedAt: DateTime(2026, 1, 1)),
-  ];
-
   test('exposes repository data as AsyncData', () async {
-    final c = _container(_FakeRepo(Result.success(sample)));
+    final c = _container(MockItemsRepository(latency: Duration.zero));
     final value = await c.read(itemsControllerProvider.future);
-    expect(value, sample);
+    expect(value, isNotEmpty);
+    expect(value.every((it) => !it.isArchived), isTrue);
   });
 
   test('maps a Failure to AsyncError carrying the Failure', () async {
-    final c = _container(_FakeRepo(const Result.failure(OfflineFailure())));
+    final c = _container(const _FailingRepo(OfflineFailure()));
     await expectLater(
       c.read(itemsControllerProvider.future),
       throwsA(isA<FailureException>()
@@ -61,17 +53,42 @@ void main() {
     );
   });
 
-  test('archive removes the row optimistically', () async {
-    final repo = _FakeRepo(Result.success([
-      Item(id: 'a', title: 'A', subtitle: '-', updatedAt: DateTime(2026)),
-      Item(id: 'b', title: 'B', subtitle: '-', updatedAt: DateTime(2026)),
-    ]));
-    final c = _container(repo);
-    await c.read(itemsControllerProvider.future);
+  test('create adds a row and refreshes the list', () async {
+    final c = _container(MockItemsRepository(latency: Duration.zero));
+    final before = await c.read(itemsControllerProvider.future);
 
-    await c.read(itemsControllerProvider.notifier).archive('a');
+    final err = await c
+        .read(itemsControllerProvider.notifier)
+        .create(const ItemDraft(title: 'Fresh', subtitle: 'by test'));
+    expect(err, isNull);
 
-    final rows = c.read(itemsControllerProvider).value!;
-    expect(rows.map((it) => it.id), ['b']);
+    final after = await c.read(itemsControllerProvider.future);
+    expect(after.length, before.length + 1);
+    expect(after.first.title, 'Fresh');
+  });
+
+  test('approve flips the status', () async {
+    final c = _container(MockItemsRepository(latency: Duration.zero));
+    final list = await c.read(itemsControllerProvider.future);
+    final pending = list.firstWhere((it) => it.status == ItemStatus.pending);
+
+    await c.read(itemsControllerProvider.notifier).approve(pending.id);
+
+    final after = await c.read(itemsControllerProvider.future);
+    expect(
+      after.firstWhere((it) => it.id == pending.id).status,
+      ItemStatus.approved,
+    );
+  });
+
+  test('archive drops the row from the list', () async {
+    final c = _container(MockItemsRepository(latency: Duration.zero));
+    final list = await c.read(itemsControllerProvider.future);
+    final target = list.first;
+
+    await c.read(itemsControllerProvider.notifier).archive(target.id);
+
+    final after = await c.read(itemsControllerProvider.future);
+    expect(after.any((it) => it.id == target.id), isFalse);
   });
 }

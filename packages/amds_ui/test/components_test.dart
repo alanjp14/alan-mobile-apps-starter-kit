@@ -10,6 +10,27 @@ Widget _host(Widget child, {ThemeMode mode = ThemeMode.light}) => MaterialApp(
     );
 
 void main() {
+  testWidgets('AmdsTextField validator drives Form.validate + errorText',
+      (tester) async {
+    final formKey = GlobalKey<FormState>();
+    await tester.pumpWidget(_host(Form(
+      key: formKey,
+      child: AmdsTextField(
+        label: 'Email',
+        validator: (v) => v.contains('@') ? null : 'Enter a valid email.',
+      ),
+    )));
+
+    expect(formKey.currentState!.validate(), isFalse);
+    await tester.pump();
+    expect(find.text('Enter a valid email.'), findsOneWidget);
+
+    await tester.enterText(find.byType(TextField), 'a@b.co');
+    expect(formKey.currentState!.validate(), isTrue);
+    await tester.pump();
+    expect(find.text('Enter a valid email.'), findsNothing);
+  });
+
   testWidgets('AmdsListItem fires onTap and exposes a button', (tester) async {
     var taps = 0;
     await tester.pumpWidget(_host(AmdsListItem(

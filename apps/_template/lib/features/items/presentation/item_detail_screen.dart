@@ -2,7 +2,10 @@ import 'package:amds_core/amds_core.dart';
 import 'package:amds_ui/amds_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../app/router.dart';
+import '../domain/item.dart';
 import 'items_controller.dart';
 
 class ItemDetailScreen extends ConsumerWidget {
@@ -10,17 +13,40 @@ class ItemDetailScreen extends ConsumerWidget {
 
   final String id;
 
+  ({String label, AmdsStatusTone tone}) _status(ItemStatus s) => switch (s) {
+        ItemStatus.pending => (label: 'Pending', tone: AmdsStatusTone.warning),
+        ItemStatus.approved => (
+            label: 'Approved',
+            tone: AmdsStatusTone.success
+          ),
+        ItemStatus.archived => (
+            label: 'Archived',
+            tone: AmdsStatusTone.neutral
+          ),
+      };
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final item = ref.watch(itemByIdProvider(id));
     final c = context.amds.colors;
     final fmt = AmdsFormatters();
+    final controller = ref.read(itemsControllerProvider.notifier);
 
     return AmdsScaffold(
-      appBar: AppBar(title: const Text('[FEATURE_NAME]')),
+      scrollable: false,
+      appBar: AppBar(
+        title: const Text('[FEATURE_NAME]'),
+        actions: [
+          if (item.valueOrNull != null)
+            IconButton(
+              icon: const Icon(Icons.edit_outlined),
+              tooltip: 'Edit',
+              onPressed: () => context.push(Routes.itemEdit(id)),
+            ),
+        ],
+      ),
       body: switch (item) {
-        AsyncData(:final value) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        AsyncData(:final value) => ListView(
             children: [
               const SizedBox(height: AmdsSpacing.md),
               Row(
@@ -32,10 +58,17 @@ class ItemDetailScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(value.title, style: context.text.headlineSmall),
-                        const SizedBox(height: 2),
-                        Text('Updated ${fmt.relative(value.updatedAt)}',
-                            style: AmdsTextStyles.bodySmall
-                                .copyWith(color: c.textSecondary)),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            AmdsStatusChip(_status(value.status).label,
+                                tone: _status(value.status).tone),
+                            const SizedBox(width: AmdsSpacing.sm),
+                            Text('Updated ${fmt.relative(value.updatedAt)}',
+                                style: AmdsTextStyles.caption
+                                    .copyWith(color: c.textTertiary)),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -49,32 +82,42 @@ class ItemDetailScreen extends ConsumerWidget {
                     _Row(label: 'ID', value: value.id),
                     const Divider(height: AmdsSpacing.lg),
                     _Row(label: 'Owner', value: value.subtitle),
-                    const Divider(height: AmdsSpacing.lg),
-                    _Row(
-                      label: 'Status',
-                      value: value.archived ? 'Archived' : 'Active',
-                    ),
                   ],
                 ),
               ),
               const SizedBox(height: AmdsSpacing.xl),
+              if (value.status == ItemStatus.pending)
+                AmdsButton(
+                  label: 'Approve',
+                  fullWidth: true,
+                  size: AmdsButtonSize.lg,
+                  leadingIcon: Icons.check,
+                  onPressed: () async {
+                    final err = await controller.approve(value.id);
+                    if (!context.mounted) return;
+                    AmdsSnackbar.show(context,
+                        message: err ?? 'Approved',
+                        tone: err == null
+                            ? AmdsStatusTone.success
+                            : AmdsStatusTone.danger);
+                  },
+                ),
+              const SizedBox(height: AmdsSpacing.sm),
               AmdsButton(
                 label: 'Archive',
-                variant: AmdsButtonVariant.destructive,
+                variant: AmdsButtonVariant.destructiveText,
                 fullWidth: true,
                 leadingIcon: Icons.archive_outlined,
                 onPressed: () async {
                   final ok = await AmdsDialogs.confirm(
                     context,
                     title: 'Archive this [DATA_NAME]?',
-                    body: 'You can restore it later from the archive.',
+                    body: 'It will be removed from the list.',
                     danger: true,
                   );
                   if (!ok || !context.mounted) return;
-                  await ref
-                      .read(itemsControllerProvider.notifier)
-                      .archive(value.id);
-                  if (context.mounted) Navigator.of(context).pop();
+                  await controller.archive(value.id);
+                  if (context.mounted) context.pop();
                 },
               ),
             ],
