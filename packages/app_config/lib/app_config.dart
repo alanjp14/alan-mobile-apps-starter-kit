@@ -48,11 +48,14 @@ class AppConfig {
       appName: appName,
       flavor: flavor,
       deepLinkScheme: deepLinkScheme,
-      apiBaseUrl: const String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.example.test'),
+      apiBaseUrl: const String.fromEnvironment('API_BASE_URL',
+          defaultValue: 'https://api.example.test'),
       universalLinkHost: const bool.hasEnvironment('UNIVERSAL_LINK_HOST')
           ? const String.fromEnvironment('UNIVERSAL_LINK_HOST')
           : null,
-      sentryDsn: const bool.hasEnvironment('SENTRY_DSN') ? const String.fromEnvironment('SENTRY_DSN') : null,
+      sentryDsn: const bool.hasEnvironment('SENTRY_DSN')
+          ? const String.fromEnvironment('SENTRY_DSN')
+          : null,
       brand: brand,
       flags: flags,
     );
@@ -104,5 +107,6 @@ class FeatureFlags {
 
   bool isOn(String key) => this[key];
 
-  FeatureFlags copyWith(Map<String, bool> overrides) => FeatureFlags({..._flags, ...overrides});
+  FeatureFlags copyWith(Map<String, bool> overrides) =>
+      FeatureFlags({..._flags, ...overrides});
 }

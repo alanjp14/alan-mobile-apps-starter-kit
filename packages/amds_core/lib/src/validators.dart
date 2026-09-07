@@ -11,30 +11,42 @@ abstract final class Validators {
   static Validator required([String message = 'This field is required.']) =>
       (v) => (v == null || v.trim().isEmpty) ? message : null;
 
-  static Validator email([String message = 'Enter a valid email address.']) => (v) {
+  static Validator email([String message = 'Enter a valid email address.']) =>
+      (v) {
         if (v == null || v.isEmpty) return null; // let `required` own emptiness
         return RegExp(_emailRe).hasMatch(v.trim()) ? null : message;
       };
 
   static Validator minLength(int n, [String? message]) =>
-      (v) => (v ?? '').length < n ? (message ?? 'Must be at least $n characters.') : null;
+      (v) => (v ?? '').length < n
+          ? (message ?? 'Must be at least $n characters.')
+          : null;
 
   static Validator maxLength(int n, [String? message]) =>
-      (v) => (v ?? '').length > n ? (message ?? 'Must be at most $n characters.') : null;
+      (v) => (v ?? '').length > n
+          ? (message ?? 'Must be at most $n characters.')
+          : null;
 
   static Validator pattern(RegExp re, String message) =>
       (v) => (v == null || v.isEmpty || re.hasMatch(v)) ? null : message;
 
-  static Validator match(String Function() other, [String message = "Doesn't match."]) =>
+  static Validator match(
+    String Function() other, [
+    String message = "Doesn't match.",
+  ]) =>
       (v) => v == other() ? null : message;
 
-  static Validator numeric([String message = 'Enter a number.']) =>
-      (v) => (v == null || v.isEmpty || num.tryParse(v.replaceAll(',', '')) != null) ? null : message;
+  static Validator numeric([String message = 'Enter a number.']) => (v) =>
+      (v == null || v.isEmpty || num.tryParse(v.replaceAll(',', '')) != null)
+          ? null
+          : message;
 
   static Validator range(num min, num max, [String? message]) => (v) {
         final n = num.tryParse((v ?? '').replaceAll(',', ''));
         if (n == null) return null;
-        return (n < min || n > max) ? (message ?? 'Enter a value between $min and $max.') : null;
+        return (n < min || n > max)
+            ? (message ?? 'Enter a value between $min and $max.')
+            : null;
       };
 
   /// Runs validators in order, returning the first error.
@@ -55,22 +67,35 @@ class PasswordPolicy {
 
   final int minLength;
 
-  Map<String, bool> check(String value, {String? notName, String? notEmail}) => {
+  Map<String, bool> check(String value, {String? notName, String? notEmail}) =>
+      {
         'At least $minLength characters': value.length >= minLength,
         'An uppercase letter': value.contains(RegExp('[A-Z]')),
         'A lowercase letter': value.contains(RegExp('[a-z]')),
         'A number': value.contains(RegExp('[0-9]')),
         'A symbol': value.contains(RegExp(r'[^A-Za-z0-9]')),
         if (notName != null && notName.isNotEmpty)
-          "Not your name": !value.toLowerCase().contains(notName.toLowerCase()),
+          'Not your name': !value.toLowerCase().contains(notName.toLowerCase()),
         if (notEmail != null && notEmail.isNotEmpty)
-          "Not your email": !value.toLowerCase().contains(notEmail.split('@').first.toLowerCase()),
+          'Not your email': !value
+              .toLowerCase()
+              .contains(notEmail.split('@').first.toLowerCase()),
       };
 
-  String? validate(String? value, {String? notName, String? notEmail, String? current}) {
+  String? validate(
+    String? value, {
+    String? notName,
+    String? notEmail,
+    String? current,
+  }) {
     if (value == null || value.isEmpty) return 'Enter a new password.';
-    if (current != null && value == current) return 'Choose a password different from your current one.';
-    final failing = check(value, notName: notName, notEmail: notEmail).entries.where((e) => !e.value).toList();
+    if (current != null && value == current) {
+      return 'Choose a password different from your current one.';
+    }
+    final failing = check(value, notName: notName, notEmail: notEmail)
+        .entries
+        .where((e) => !e.value)
+        .toList();
     return failing.isEmpty ? null : failing.first.key;
   }
 }

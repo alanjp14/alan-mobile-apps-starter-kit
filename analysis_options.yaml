@@ -16,14 +16,14 @@ analyzer:
 
 linter:
   rules:
+    # NOTE: `require_trailing_commas` is intentionally omitted — the Dart 3.7+
+    # "tall" formatter owns comma/wrapping decisions and fights that lint.
     - always_declare_return_types
     - avoid_print
     - prefer_const_constructors
     - prefer_const_constructors_in_immutables
-    - prefer_const_declarations
     - prefer_final_locals
     - prefer_single_quotes
-    - require_trailing_commas
     - sort_child_properties_last
     - unawaited_futures
     - use_key_in_widget_constructors

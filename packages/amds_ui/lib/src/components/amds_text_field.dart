@@ -67,9 +67,15 @@ class AmdsTextField extends StatelessWidget {
             child: Text.rich(
               TextSpan(
                 text: label,
-                style: AmdsTextStyles.label.copyWith(color: hasError ? c.danger : c.textSecondary),
+                style: AmdsTextStyles.label
+                    .copyWith(color: hasError ? c.danger : c.textSecondary),
                 children: required
-                    ? [TextSpan(text: '  (required)', style: AmdsTextStyles.labelSmall.copyWith(color: c.textTertiary))]
+                    ? [
+                        TextSpan(
+                            text: '  (required)',
+                            style: AmdsTextStyles.labelSmall
+                                .copyWith(color: c.textTertiary))
+                      ]
                     : null,
               ),
             ),
@@ -93,7 +99,9 @@ class AmdsTextField extends StatelessWidget {
           style: AmdsTextStyles.bodyLarge.copyWith(color: c.textPrimary),
           decoration: InputDecoration(
             hintText: hint,
-            prefixIcon: prefixIcon != null ? Icon(prefixIcon, size: AmdsSize.iconSm) : null,
+            prefixIcon: prefixIcon != null
+                ? Icon(prefixIcon, size: AmdsSize.iconSm)
+                : null,
             suffixIcon: suffix,
             errorText: hasError ? error : null,
             helperText: hasError ? null : helper,
@@ -149,7 +157,11 @@ class _AmdsPasswordFieldState extends State<AmdsPasswordField> {
       textInputAction: widget.textInputAction,
       autofillHints: [widget.autofillHint],
       suffix: IconButton(
-        icon: Icon(_obscured ? Icons.visibility_outlined : Icons.visibility_off_outlined, size: AmdsSize.iconSm),
+        icon: Icon(
+            _obscured
+                ? Icons.visibility_outlined
+                : Icons.visibility_off_outlined,
+            size: AmdsSize.iconSm),
         tooltip: _obscured ? 'Show password' : 'Hide password',
         onPressed: () => setState(() => _obscured = !_obscured),
       ),

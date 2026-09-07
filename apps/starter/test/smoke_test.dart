@@ -4,7 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:starter/app/showcase_screen.dart';
 
 void main() {
-  testWidgets('showcase renders in light and dark without exceptions', (tester) async {
+  testWidgets('showcase renders in light and dark without exceptions',
+      (tester) async {
     for (final mode in [ThemeMode.light, ThemeMode.dark]) {
       await tester.pumpWidget(
         MaterialApp(
@@ -14,7 +15,8 @@ void main() {
           home: const ShowcaseScreen(),
         ),
       );
-      await tester.pump(const Duration(seconds: 1)); // let entrance + count-up settle
+      await tester
+          .pump(const Duration(seconds: 1)); // let entrance + count-up settle
 
       expect(find.text('AMDS Starter'), findsOneWidget);
       expect(find.byType(AmdsButton), findsWidgets);
@@ -25,7 +27,10 @@ void main() {
 
   testWidgets('theme toggle button flips brightness', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(theme: AmdsTheme.light(), darkTheme: AmdsTheme.dark(), home: const ShowcaseScreen()),
+      MaterialApp(
+          theme: AmdsTheme.light(),
+          darkTheme: AmdsTheme.dark(),
+          home: const ShowcaseScreen()),
     );
     await tester.pump(const Duration(seconds: 1));
     expect(find.byIcon(Icons.dark_mode_outlined), findsOneWidget);

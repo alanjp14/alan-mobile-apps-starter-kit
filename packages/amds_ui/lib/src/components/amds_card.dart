@@ -32,8 +32,12 @@ class AmdsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: variant == AmdsCardVariant.filled ? c.surfaceVariant : c.surface,
         borderRadius: AmdsRadius.brLg,
-        border: variant == AmdsCardVariant.outlined ? Border.all(color: c.border) : null,
-        boxShadow: variant == AmdsCardVariant.elevated ? context.amds.elevation(1) : null,
+        border: variant == AmdsCardVariant.outlined
+            ? Border.all(color: c.border)
+            : null,
+        boxShadow: variant == AmdsCardVariant.elevated
+            ? context.amds.elevation(1)
+            : null,
       ),
       child: Padding(padding: padding, child: child),
     );

@@ -7,6 +7,7 @@
 // The semantic layer (AmdsColors) and ThemeData wiring stay hand-maintained in
 // theme_ext.dart / theme.dart — they reference the names emitted here.
 import { readFileSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 
 const ROOT = new URL('..', import.meta.url).pathname.replace(/^\/([A-Za-z]):/, '$1:');
 const T = JSON.parse(readFileSync(`${ROOT}/design-tokens/tokens.json`, 'utf8'));
@@ -78,8 +79,8 @@ const dur = Object.entries(T.motion.duration)
 const ease = Object.entries(T.motion.easing)
   .filter(([k]) => k !== '$type')
   .map(([k, v]) => {
-    const [a, b, cc, d] = val(v);
-    return `  static const Curve ${k} = Cubic(${a}, ${b}, ${cc}, ${d});`;
+    const [x1, y1, x2, y2] = val(v).map((n) => d(n));
+    return `  static const Curve ${k} = Cubic(${x1}, ${y1}, ${x2}, ${y2});`;
   })
   .join('\n');
 
@@ -114,7 +115,6 @@ import 'package:flutter/widgets.dart';
 /// Raw color ramps. Prefer the semantic set on \`context.amds.colors\`.
 abstract final class AmdsPalette {
 ${palette}
-  static const neutral1000 = Color(0xFF000000);
 }
 
 /// Spacing scale (4pt base). Values are logical pixels.
@@ -229,5 +229,13 @@ abstract final class AmdsOpacity {
 `;
 
 writeFileSync(OUT, out);
+
+// Normalize with the Dart formatter so the committed file matches `dart format`
+// output exactly — otherwise CI's token-freshness diff trips on whitespace.
+const fmt = spawnSync(`dart format "${OUT}"`, { stdio: 'inherit', shell: true });
+if (fmt.status !== 0) {
+  console.warn('warning: `dart format` unavailable — committed tokens.dart may need manual formatting');
+}
+
 console.log(`wrote ${OUT.replace(ROOT, '.')}  (${out.split('\n').length} lines)`);
 console.log('note: theme_ext.dart (AmdsColors) + theme.dart (ThemeData) are hand-maintained.');

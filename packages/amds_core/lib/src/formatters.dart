@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 
 /// Central formatters. Construct one per locale (usually app-wide) and inject it.
 class AmdsFormatters {
-  AmdsFormatters({this.locale = 'en', DateTime Function()? clock}) : _now = clock ?? DateTime.now;
+  AmdsFormatters({this.locale = 'en', DateTime Function()? clock})
+      : _now = clock ?? DateTime.now;
 
   final String locale;
   final DateTime Function() _now;
@@ -14,23 +15,37 @@ class AmdsFormatters {
 
   /// Abbreviates from 10,000: `12.4k`, `1.2M`. Locale-aware grouping below that.
   String compactNumber(num value) {
-    if (value.abs() >= 10000) return NumberFormat.compact(locale: locale).format(value);
+    if (value.abs() >= 10000) {
+      return NumberFormat.compact(locale: locale).format(value);
+    }
     return NumberFormat.decimalPattern(locale).format(value);
   }
 
   String number(num value, {int decimals = 0}) =>
-      NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: decimals).format(value);
+      NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: decimals)
+          .format(value);
 
   /// `value` is a ratio 0..1 unless [alreadyPercent].
   String percent(num value, {int decimals = 0, bool alreadyPercent = false}) {
     final v = alreadyPercent ? value / 100 : value;
-    return NumberFormat.decimalPercentPattern(locale: locale, decimalDigits: decimals).format(v);
+    return NumberFormat.decimalPercentPattern(
+      locale: locale,
+      decimalDigits: decimals,
+    ).format(v);
   }
 
   /// [minorUnits] is the amount in the currency's smallest unit (e.g. cents).
-  String currency(int minorUnits, {required String currencyCode, int decimalDigits = 2}) {
+  String currency(
+    int minorUnits, {
+    required String currencyCode,
+    int decimalDigits = 2,
+  }) {
     final major = minorUnits / _pow10(decimalDigits);
-    return NumberFormat.currency(locale: locale, name: currencyCode, decimalDigits: decimalDigits).format(major);
+    return NumberFormat.currency(
+      locale: locale,
+      name: currencyCode,
+      decimalDigits: decimalDigits,
+    ).format(major);
   }
 
   // ── dates ──────────────────────────────────────────────────────────────────
@@ -56,7 +71,9 @@ class AmdsFormatters {
     return date(local);
   }
 
-  static bool _isSameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
-  static bool _isYesterday(DateTime now, DateTime b) => _isSameDay(now.subtract(const Duration(days: 1)), b);
+  static bool _isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
+  static bool _isYesterday(DateTime now, DateTime b) =>
+      _isSameDay(now.subtract(const Duration(days: 1)), b);
   static int _pow10(int n) => n <= 0 ? 1 : 10 * _pow10(n - 1);
 }

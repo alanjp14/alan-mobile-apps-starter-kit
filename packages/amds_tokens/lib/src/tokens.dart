@@ -57,7 +57,6 @@ abstract final class AmdsPalette {
   static const sky500 = Color(0xFF0EA5E9);
   static const sky600 = Color(0xFF0284C7);
   static const sky700 = Color(0xFF0369A1);
-  static const neutral1000 = Color(0xFF000000);
 }
 
 /// Spacing scale (4pt base). Values are logical pixels.
@@ -156,11 +155,11 @@ abstract final class AmdsMotion {
   static const slow = Duration(milliseconds: 300);
   static const slower = Duration(milliseconds: 400);
 
-  static const Curve standard = Cubic(0.2, 0, 0, 1);
-  static const Curve decelerate = Cubic(0, 0, 0, 1);
-  static const Curve accelerate = Cubic(0.3, 0, 1, 1);
-  static const Curve emphasized = Cubic(0.2, 0, 0, 1);
-  static const Curve spring = Cubic(0.34, 1.56, 0.64, 1);
+  static const Curve standard = Cubic(0.2, 0.0, 0.0, 1.0);
+  static const Curve decelerate = Cubic(0.0, 0.0, 0.0, 1.0);
+  static const Curve accelerate = Cubic(0.3, 0.0, 1.0, 1.0);
+  static const Curve emphasized = Cubic(0.2, 0.0, 0.0, 1.0);
+  static const Curve spring = Cubic(0.34, 1.56, 0.64, 1.0);
 }
 
 /// Elevation as `BoxShadow` sets. Level 0 is flat (use a 1px border instead).
@@ -168,31 +167,68 @@ abstract final class AmdsElevation {
   static const _lightShadow = Color(0xFF0F172A);
   static const _darkShadow = Color(0xFF000000);
 
-  static List<BoxShadow> level(int level, {Brightness brightness = Brightness.light}) {
+  static List<BoxShadow> level(int level,
+      {Brightness brightness = Brightness.light}) {
     final dark = brightness == Brightness.dark;
     final c = dark ? _darkShadow : _lightShadow;
     switch (level) {
       case 1:
-        return [BoxShadow(color: c.withValues(alpha: dark ? 0.40 : 0.06), blurRadius: 2, offset: const Offset(0, 1))];
+        return [
+          BoxShadow(
+              color: c.withValues(alpha: dark ? 0.40 : 0.06),
+              blurRadius: 2,
+              offset: const Offset(0, 1))
+        ];
       case 2:
         return [
-          BoxShadow(color: c.withValues(alpha: dark ? 0.44 : 0.08), blurRadius: 4, spreadRadius: -1, offset: const Offset(0, 2)),
-          BoxShadow(color: c.withValues(alpha: dark ? 0.32 : 0.04), blurRadius: 2, offset: const Offset(0, 1)),
+          BoxShadow(
+              color: c.withValues(alpha: dark ? 0.44 : 0.08),
+              blurRadius: 4,
+              spreadRadius: -1,
+              offset: const Offset(0, 2)),
+          BoxShadow(
+              color: c.withValues(alpha: dark ? 0.32 : 0.04),
+              blurRadius: 2,
+              offset: const Offset(0, 1)),
         ];
       case 3:
         return [
-          BoxShadow(color: c.withValues(alpha: dark ? 0.48 : 0.10), blurRadius: 8, spreadRadius: -2, offset: const Offset(0, 4)),
-          BoxShadow(color: c.withValues(alpha: dark ? 0.36 : 0.05), blurRadius: 4, spreadRadius: -1, offset: const Offset(0, 2)),
+          BoxShadow(
+              color: c.withValues(alpha: dark ? 0.48 : 0.10),
+              blurRadius: 8,
+              spreadRadius: -2,
+              offset: const Offset(0, 4)),
+          BoxShadow(
+              color: c.withValues(alpha: dark ? 0.36 : 0.05),
+              blurRadius: 4,
+              spreadRadius: -1,
+              offset: const Offset(0, 2)),
         ];
       case 4:
         return [
-          BoxShadow(color: c.withValues(alpha: dark ? 0.52 : 0.12), blurRadius: 20, spreadRadius: -4, offset: const Offset(0, 12)),
-          BoxShadow(color: c.withValues(alpha: dark ? 0.40 : 0.06), blurRadius: 8, spreadRadius: -2, offset: const Offset(0, 4)),
+          BoxShadow(
+              color: c.withValues(alpha: dark ? 0.52 : 0.12),
+              blurRadius: 20,
+              spreadRadius: -4,
+              offset: const Offset(0, 12)),
+          BoxShadow(
+              color: c.withValues(alpha: dark ? 0.40 : 0.06),
+              blurRadius: 8,
+              spreadRadius: -2,
+              offset: const Offset(0, 4)),
         ];
       case 5:
         return [
-          BoxShadow(color: c.withValues(alpha: dark ? 0.60 : 0.16), blurRadius: 40, spreadRadius: -8, offset: const Offset(0, 24)),
-          BoxShadow(color: c.withValues(alpha: dark ? 0.44 : 0.08), blurRadius: 16, spreadRadius: -4, offset: const Offset(0, 8)),
+          BoxShadow(
+              color: c.withValues(alpha: dark ? 0.60 : 0.16),
+              blurRadius: 40,
+              spreadRadius: -8,
+              offset: const Offset(0, 24)),
+          BoxShadow(
+              color: c.withValues(alpha: dark ? 0.44 : 0.08),
+              blurRadius: 16,
+              spreadRadius: -4,
+              offset: const Offset(0, 8)),
         ];
       default:
         return const [];
@@ -205,21 +241,92 @@ abstract final class AmdsElevation {
 abstract final class AmdsTextStyles {
   static const String fontFamily = 'Inter';
 
-  static const displayLarge = TextStyle(fontFamily: fontFamily, fontSize: 36.0, height: 44.0 / 36.0, fontWeight: FontWeight.w700, letterSpacing: -0.72);
-  static const displayMedium = TextStyle(fontFamily: fontFamily, fontSize: 32.0, height: 40.0 / 32.0, fontWeight: FontWeight.w700, letterSpacing: -0.64);
-  static const displaySmall = TextStyle(fontFamily: fontFamily, fontSize: 28.0, height: 36.0 / 28.0, fontWeight: FontWeight.w700, letterSpacing: -0.28);
-  static const headingLarge = TextStyle(fontFamily: fontFamily, fontSize: 24.0, height: 32.0 / 24.0, fontWeight: FontWeight.w600, letterSpacing: -0.24);
-  static const headingMedium = TextStyle(fontFamily: fontFamily, fontSize: 20.0, height: 28.0 / 20.0, fontWeight: FontWeight.w600, letterSpacing: -0.2);
-  static const headingSmall = TextStyle(fontFamily: fontFamily, fontSize: 18.0, height: 26.0 / 18.0, fontWeight: FontWeight.w600);
-  static const titleLarge = TextStyle(fontFamily: fontFamily, fontSize: 16.0, height: 24.0 / 16.0, fontWeight: FontWeight.w600);
-  static const titleMedium = TextStyle(fontFamily: fontFamily, fontSize: 14.0, height: 20.0 / 14.0, fontWeight: FontWeight.w500, letterSpacing: 0.07);
-  static const bodyLarge = TextStyle(fontFamily: fontFamily, fontSize: 16.0, height: 24.0 / 16.0, fontWeight: FontWeight.w400);
-  static const bodyMedium = TextStyle(fontFamily: fontFamily, fontSize: 14.0, height: 20.0 / 14.0, fontWeight: FontWeight.w400);
-  static const bodySmall = TextStyle(fontFamily: fontFamily, fontSize: 13.0, height: 18.0 / 13.0, fontWeight: FontWeight.w400, letterSpacing: 0.065);
-  static const label = TextStyle(fontFamily: fontFamily, fontSize: 14.0, height: 16.0 / 14.0, fontWeight: FontWeight.w500, letterSpacing: 0.14);
-  static const labelSmall = TextStyle(fontFamily: fontFamily, fontSize: 12.0, height: 16.0 / 12.0, fontWeight: FontWeight.w500, letterSpacing: 0.24);
-  static const caption = TextStyle(fontFamily: fontFamily, fontSize: 12.0, height: 16.0 / 12.0, fontWeight: FontWeight.w400, letterSpacing: 0.12);
-  static const overline = TextStyle(fontFamily: fontFamily, fontSize: 11.0, height: 16.0 / 11.0, fontWeight: FontWeight.w600, letterSpacing: 0.88);
+  static const displayLarge = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 36.0,
+      height: 44.0 / 36.0,
+      fontWeight: FontWeight.w700,
+      letterSpacing: -0.72);
+  static const displayMedium = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 32.0,
+      height: 40.0 / 32.0,
+      fontWeight: FontWeight.w700,
+      letterSpacing: -0.64);
+  static const displaySmall = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 28.0,
+      height: 36.0 / 28.0,
+      fontWeight: FontWeight.w700,
+      letterSpacing: -0.28);
+  static const headingLarge = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 24.0,
+      height: 32.0 / 24.0,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.24);
+  static const headingMedium = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 20.0,
+      height: 28.0 / 20.0,
+      fontWeight: FontWeight.w600,
+      letterSpacing: -0.2);
+  static const headingSmall = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 18.0,
+      height: 26.0 / 18.0,
+      fontWeight: FontWeight.w600);
+  static const titleLarge = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16.0,
+      height: 24.0 / 16.0,
+      fontWeight: FontWeight.w600);
+  static const titleMedium = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 14.0,
+      height: 20.0 / 14.0,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.07);
+  static const bodyLarge = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 16.0,
+      height: 24.0 / 16.0,
+      fontWeight: FontWeight.w400);
+  static const bodyMedium = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 14.0,
+      height: 20.0 / 14.0,
+      fontWeight: FontWeight.w400);
+  static const bodySmall = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 13.0,
+      height: 18.0 / 13.0,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.065);
+  static const label = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 14.0,
+      height: 16.0 / 14.0,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.14);
+  static const labelSmall = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 12.0,
+      height: 16.0 / 12.0,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.24);
+  static const caption = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 12.0,
+      height: 16.0 / 12.0,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.12);
+  static const overline = TextStyle(
+      fontFamily: fontFamily,
+      fontSize: 11.0,
+      height: 16.0 / 11.0,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.88);
 }
 
 /// Opacity tokens for interaction overlays.

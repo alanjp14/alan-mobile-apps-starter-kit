@@ -7,7 +7,11 @@ import 'package:flutter/material.dart';
 /// A single shimmering block. Compose these into list/card skeletons that match
 /// the real layout exactly (zero layout shift on swap).
 class AmdsSkeleton extends StatefulWidget {
-  const AmdsSkeleton({this.width, this.height = 16, this.borderRadius = AmdsRadius.brXs, super.key});
+  const AmdsSkeleton(
+      {this.width,
+      this.height = 16,
+      this.borderRadius = AmdsRadius.brXs,
+      super.key});
 
   const AmdsSkeleton.circle(double size, {super.key})
       : width = size,
@@ -22,9 +26,11 @@ class AmdsSkeleton extends StatefulWidget {
   State<AmdsSkeleton> createState() => _AmdsSkeletonState();
 }
 
-class _AmdsSkeletonState extends State<AmdsSkeleton> with SingleTickerProviderStateMixin {
-  late final AnimationController _c =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 1200))..repeat();
+class _AmdsSkeletonState extends State<AmdsSkeleton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1200))
+    ..repeat();
 
   @override
   void dispose() {
@@ -38,7 +44,8 @@ class _AmdsSkeletonState extends State<AmdsSkeleton> with SingleTickerProviderSt
     final reduce = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
 
     final base = DecoratedBox(
-      decoration: BoxDecoration(color: colors.skeletonBase, borderRadius: widget.borderRadius),
+      decoration: BoxDecoration(
+          color: colors.skeletonBase, borderRadius: widget.borderRadius),
       child: SizedBox(width: widget.width, height: widget.height),
     );
     if (reduce) return base;
@@ -53,7 +60,11 @@ class _AmdsSkeletonState extends State<AmdsSkeleton> with SingleTickerProviderSt
             shaderCallback: (rect) => LinearGradient(
               begin: Alignment(dx - 0.3, 0),
               end: Alignment(dx + 0.3, 0),
-              colors: [colors.skeletonBase, colors.skeletonSheen, colors.skeletonBase],
+              colors: [
+                colors.skeletonBase,
+                colors.skeletonSheen,
+                colors.skeletonBase
+              ],
             ).createShader(rect),
             blendMode: BlendMode.srcATop,
             child: base,
@@ -74,21 +85,22 @@ class AmdsSkeletonList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: List.generate(
-        rows,
-        (_) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: AmdsSpacing.xs),
-          child: SizedBox(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (var i = 0; i < rows; i++) ...[
+          if (i > 0) const SizedBox(height: AmdsSpacing.md),
+          SizedBox(
             height: rowHeight,
-            child: Row(
+            child: const Row(
               children: [
-                const AmdsSkeleton.circle(40),
-                const SizedBox(width: AmdsSpacing.sm),
+                AmdsSkeleton.circle(40),
+                SizedBox(width: AmdsSpacing.sm),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       AmdsSkeleton(width: 180, height: 14),
                       SizedBox(height: 8),
                       AmdsSkeleton(width: 120, height: 12),
@@ -98,8 +110,8 @@ class AmdsSkeletonList extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
+        ],
+      ],
     );
   }
 }

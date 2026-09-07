@@ -28,7 +28,8 @@ class StarterApp extends StatelessWidget {
             final mq = MediaQuery.of(context);
             return MediaQuery(
               data: mq.copyWith(
-                textScaler: mq.textScaler.clamp(minScaleFactor: 0.85, maxScaleFactor: 2.0),
+                textScaler: mq.textScaler
+                    .clamp(minScaleFactor: 0.85, maxScaleFactor: 2.0),
               ),
               child: child!,
             );

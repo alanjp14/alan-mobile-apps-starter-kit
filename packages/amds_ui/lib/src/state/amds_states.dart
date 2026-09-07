@@ -8,7 +8,12 @@ import '../components/amds_button.dart';
 import '../components/amds_misc.dart';
 
 class _CenteredState extends StatelessWidget {
-  const _CenteredState({required this.icon, required this.title, this.body, this.action, this.iconColor});
+  const _CenteredState(
+      {required this.icon,
+      required this.title,
+      this.body,
+      this.action,
+      this.iconColor});
 
   final IconData icon;
   final String title;
@@ -27,14 +32,23 @@ class _CenteredState extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, size: AmdsSize.iconXl, color: iconColor ?? c.textTertiary),
+              Icon(icon,
+                  size: AmdsSize.iconXl, color: iconColor ?? c.textTertiary),
               const SizedBox(height: AmdsSpacing.md),
-              Text(title, style: context.text.headlineSmall, textAlign: TextAlign.center),
+              Text(title,
+                  style: context.text.headlineSmall,
+                  textAlign: TextAlign.center),
               if (body != null) ...[
                 const SizedBox(height: AmdsSpacing.xs),
-                Text(body!, style: AmdsTextStyles.bodyMedium.copyWith(color: c.textSecondary), textAlign: TextAlign.center),
+                Text(body!,
+                    style: AmdsTextStyles.bodyMedium
+                        .copyWith(color: c.textSecondary),
+                    textAlign: TextAlign.center),
               ],
-              if (action != null) ...[const SizedBox(height: AmdsSpacing.lg), action!],
+              if (action != null) ...[
+                const SizedBox(height: AmdsSpacing.lg),
+                action!
+              ],
             ],
           ),
         ),
@@ -76,7 +90,10 @@ class AmdsEmptyState extends StatelessWidget {
         title: title,
         body: body,
         action: (actionLabel != null && onAction != null)
-            ? AmdsButton(label: actionLabel!, onPressed: onAction, size: AmdsButtonSize.lg)
+            ? AmdsButton(
+                label: actionLabel!,
+                onPressed: onAction,
+                size: AmdsButtonSize.lg)
             : null,
       );
 }
@@ -106,10 +123,15 @@ class AmdsErrorState extends StatelessWidget {
       action: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (onRetry != null) AmdsButton(label: 'Try again', onPressed: onRetry, size: AmdsButtonSize.lg),
+          if (onRetry != null)
+            AmdsButton(
+                label: 'Try again',
+                onPressed: onRetry,
+                size: AmdsButtonSize.lg),
           if (traceId != null) ...[
             const SizedBox(height: AmdsSpacing.sm),
-            SelectableText('Ref: $traceId', style: AmdsTextStyles.caption.copyWith(color: c.textTertiary)),
+            SelectableText('Ref: $traceId',
+                style: AmdsTextStyles.caption.copyWith(color: c.textTertiary)),
           ],
         ],
       ),
@@ -127,7 +149,9 @@ class AmdsOfflineBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) => AmdsBanner(
         tone: AmdsStatusTone.warning,
-        message: asOf == null ? "You're offline." : "You're offline — showing data from $asOf.",
+        message: asOf == null
+            ? "You're offline."
+            : "You're offline — showing data from $asOf.",
         action: onRetry == null ? null : 'Retry',
         onActionPressed: onRetry,
       );

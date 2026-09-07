@@ -58,11 +58,25 @@ class AmdsColors {
   });
 
   final Color brand;
-  final Color primary, primaryHover, primaryPressed, primaryContainer, onPrimary, onPrimaryContainer;
+  final Color primary,
+      primaryHover,
+      primaryPressed,
+      primaryContainer,
+      onPrimary,
+      onPrimaryContainer;
   final Color secondary, onSecondary, accent;
   final Color background, onBackground;
-  final Color surface, surfaceVariant, surfaceRaised, onSurface, onSurfaceVariant;
-  final Color textPrimary, textSecondary, textTertiary, textDisabled, textOnColor, textLink;
+  final Color surface,
+      surfaceVariant,
+      surfaceRaised,
+      onSurface,
+      onSurfaceVariant;
+  final Color textPrimary,
+      textSecondary,
+      textTertiary,
+      textDisabled,
+      textOnColor,
+      textLink;
   final Color border, borderStrong, borderFocus, divider, disabled;
   final Color success, successContainer, onSuccessContainer;
   final Color warning, warningContainer, onWarningContainer;
@@ -162,7 +176,12 @@ class AmdsColors {
     skeletonSheen: AmdsPalette.neutral700,
   );
 
-  AmdsColors copyWith({Color? primary, Color? primaryContainer, Color? secondary, Color? accent, Color? brand}) {
+  AmdsColors copyWith(
+      {Color? primary,
+      Color? primaryContainer,
+      Color? secondary,
+      Color? accent,
+      Color? brand}) {
     return AmdsColors(
       brand: brand ?? this.brand,
       primary: primary ?? this.primary,
@@ -270,11 +289,14 @@ class AmdsThemeExt extends ThemeExtension<AmdsThemeExt> {
 
   bool get isDark => brightness == Brightness.dark;
 
-  List<BoxShadow> elevation(int level) => AmdsElevation.level(level, brightness: brightness);
+  List<BoxShadow> elevation(int level) =>
+      AmdsElevation.level(level, brightness: brightness);
 
   @override
   AmdsThemeExt copyWith({AmdsColors? colors, Brightness? brightness}) =>
-      AmdsThemeExt(colors: colors ?? this.colors, brightness: brightness ?? this.brightness);
+      AmdsThemeExt(
+          colors: colors ?? this.colors,
+          brightness: brightness ?? this.brightness);
 
   @override
   AmdsThemeExt lerp(ThemeExtension<AmdsThemeExt>? other, double t) {

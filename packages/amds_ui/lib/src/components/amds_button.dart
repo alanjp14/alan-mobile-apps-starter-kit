@@ -5,7 +5,14 @@
 import 'package:amds_tokens/amds_tokens.dart';
 import 'package:flutter/material.dart';
 
-enum AmdsButtonVariant { primary, secondary, tertiary, tonal, destructive, destructiveText }
+enum AmdsButtonVariant {
+  primary,
+  secondary,
+  tertiary,
+  tonal,
+  destructive,
+  destructiveText
+}
 
 enum AmdsButtonSize { sm, md, lg }
 
@@ -82,36 +89,85 @@ class _AmdsButtonState extends State<AmdsButton> {
     final reduce = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
     final enabled = widget.onPressed != null && !widget.loading;
 
-    final ({Color bg, Color fg, Color? outline, bool tinted}) v = switch (widget.variant) {
-      AmdsButtonVariant.primary => (bg: c.primary, fg: c.onPrimary, outline: null, tinted: false),
-      AmdsButtonVariant.secondary => (bg: Colors.transparent, fg: c.primary, outline: c.primary, tinted: false),
-      AmdsButtonVariant.tertiary => (bg: Colors.transparent, fg: c.primary, outline: null, tinted: false),
-      AmdsButtonVariant.tonal => (bg: c.primaryContainer, fg: c.onPrimaryContainer, outline: null, tinted: true),
-      AmdsButtonVariant.destructive => (bg: c.danger, fg: c.textOnColor, outline: null, tinted: false),
-      AmdsButtonVariant.destructiveText => (bg: Colors.transparent, fg: c.danger, outline: null, tinted: false),
+    final ({Color bg, Color fg, Color? outline, bool tinted}) v =
+        switch (widget.variant) {
+      AmdsButtonVariant.primary => (
+          bg: c.primary,
+          fg: c.onPrimary,
+          outline: null,
+          tinted: false
+        ),
+      AmdsButtonVariant.secondary => (
+          bg: Colors.transparent,
+          fg: c.primary,
+          outline: c.primary,
+          tinted: false
+        ),
+      AmdsButtonVariant.tertiary => (
+          bg: Colors.transparent,
+          fg: c.primary,
+          outline: null,
+          tinted: false
+        ),
+      AmdsButtonVariant.tonal => (
+          bg: c.primaryContainer,
+          fg: c.onPrimaryContainer,
+          outline: null,
+          tinted: true
+        ),
+      AmdsButtonVariant.destructive => (
+          bg: c.danger,
+          fg: c.textOnColor,
+          outline: null,
+          tinted: false
+        ),
+      AmdsButtonVariant.destructiveText => (
+          bg: Colors.transparent,
+          fg: c.danger,
+          outline: null,
+          tinted: false
+        ),
     };
 
     final overlay = v.fg.withValues(alpha: AmdsOpacity.pressed);
     final style = ButtonStyle(
-      minimumSize: WidgetStatePropertyAll(Size(widget.fullWidth ? double.infinity : AmdsSize.touchTarget, _minHeight)),
+      minimumSize: WidgetStatePropertyAll(Size(
+          widget.fullWidth ? double.infinity : AmdsSize.touchTarget,
+          _minHeight)),
       padding: WidgetStatePropertyAll(
-        EdgeInsets.symmetric(horizontal: widget.size == AmdsButtonSize.sm ? AmdsSpacing.sm : AmdsSpacing.md),
+        EdgeInsets.symmetric(
+            horizontal: widget.size == AmdsButtonSize.sm
+                ? AmdsSpacing.sm
+                : AmdsSpacing.md),
       ),
-      shape: const WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: AmdsRadius.brMd)),
+      shape: const WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: AmdsRadius.brMd)),
       textStyle: WidgetStatePropertyAll(_textStyle),
       backgroundColor: WidgetStateProperty.resolveWith((s) {
-        if (s.contains(WidgetState.disabled)) return v.bg == Colors.transparent ? null : c.disabled;
+        if (s.contains(WidgetState.disabled)) {
+          return v.bg == Colors.transparent ? null : c.disabled;
+        }
         return v.bg == Colors.transparent ? null : v.bg;
       }),
       foregroundColor: WidgetStateProperty.resolveWith(
-          (s) => s.contains(WidgetState.disabled) ? v.fg.withValues(alpha: AmdsOpacity.disabled) : v.fg),
+        (s) => s.contains(WidgetState.disabled)
+            ? v.fg.withValues(alpha: AmdsOpacity.disabled)
+            : v.fg,
+      ),
       overlayColor: WidgetStatePropertyAll(overlay),
       side: v.outline == null
           ? null
-          : WidgetStateProperty.resolveWith((s) => BorderSide(
-              color: s.contains(WidgetState.disabled) ? c.disabled : v.outline!, width: 1)),
-      elevation: widget.variant == AmdsButtonVariant.primary || widget.variant == AmdsButtonVariant.destructive
-          ? WidgetStateProperty.resolveWith<double>((s) => s.contains(WidgetState.pressed) ? 0.0 : 1.0)
+          : WidgetStateProperty.resolveWith(
+              (s) => BorderSide(
+                color:
+                    s.contains(WidgetState.disabled) ? c.disabled : v.outline!,
+                width: 1,
+              ),
+            ),
+      elevation: widget.variant == AmdsButtonVariant.primary ||
+              widget.variant == AmdsButtonVariant.destructive
+          ? WidgetStateProperty.resolveWith<double>(
+              (s) => s.contains(WidgetState.pressed) ? 0.0 : 1.0)
           : const WidgetStatePropertyAll<double>(0),
       shadowColor: const WidgetStatePropertyAll<Color>(Color(0xFF0F172A)),
     );
@@ -121,10 +177,14 @@ class _AmdsButtonState extends State<AmdsButton> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (widget.loading)
-          SizedBox(width: _iconSize, height: _iconSize, child: CircularProgressIndicator(strokeWidth: 2, color: v.fg))
+          SizedBox(
+              width: _iconSize,
+              height: _iconSize,
+              child: CircularProgressIndicator(strokeWidth: 2, color: v.fg))
         else if (widget.leadingIcon != null)
           Icon(widget.leadingIcon, size: _iconSize),
-        if (widget.loading || widget.leadingIcon != null) const SizedBox(width: AmdsSpacing.xs),
+        if (widget.loading || widget.leadingIcon != null)
+          const SizedBox(width: AmdsSpacing.xs),
         Flexible(child: Text(widget.label, overflow: TextOverflow.ellipsis)),
         if (widget.trailingIcon != null && !widget.loading) ...[
           const SizedBox(width: AmdsSpacing.xs),
@@ -136,17 +196,37 @@ class _AmdsButtonState extends State<AmdsButton> {
     final onPressed = enabled ? widget.onPressed : null;
     final filled = v.bg != Colors.transparent;
     final button = filled
-        ? FilledButton(onPressed: onPressed, statesController: _states, style: style, autofocus: widget.autofocus, child: child)
+        ? FilledButton(
+            onPressed: onPressed,
+            statesController: _states,
+            style: style,
+            autofocus: widget.autofocus,
+            child: child)
         : v.outline != null
-            ? OutlinedButton(onPressed: onPressed, statesController: _states, style: style, autofocus: widget.autofocus, child: child)
-            : TextButton(onPressed: onPressed, statesController: _states, style: style, autofocus: widget.autofocus, child: child);
+            ? OutlinedButton(
+                onPressed: onPressed,
+                statesController: _states,
+                style: style,
+                autofocus: widget.autofocus,
+                child: child)
+            : TextButton(
+                onPressed: onPressed,
+                statesController: _states,
+                style: style,
+                autofocus: widget.autofocus,
+                child: child);
 
     // The Material button already provides button role, focus, keyboard
     // activation, and its accessible name from the child Text. Only override the
     // name when a caller passes an explicit semanticLabel.
     Widget result = widget.semanticLabel == null
         ? button
-        : Semantics(label: widget.semanticLabel, button: true, enabled: enabled, excludeSemantics: true, child: button);
+        : Semantics(
+            label: widget.semanticLabel,
+            button: true,
+            enabled: enabled,
+            excludeSemantics: true,
+            child: button);
 
     result = AnimatedScale(
       scale: (_pressed && !reduce) ? 0.96 : 1.0,
@@ -155,7 +235,9 @@ class _AmdsButtonState extends State<AmdsButton> {
       child: result,
     );
 
-    if (widget.fullWidth) result = SizedBox(width: double.infinity, child: result);
+    if (widget.fullWidth) {
+      result = SizedBox(width: double.infinity, child: result);
+    }
     return result;
   }
 }

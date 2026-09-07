@@ -16,7 +16,8 @@ class DetailScreen extends StatelessWidget {
           const SizedBox(height: AmdsSpacing.md),
           Row(
             children: [
-              const AmdsAvatar(name: 'Compressor A-12', size: AmdsSize.avatarLg),
+              const AmdsAvatar(
+                  name: 'Compressor A-12', size: AmdsSize.avatarLg),
               const SizedBox(width: AmdsSpacing.md),
               Expanded(
                 child: Column(
@@ -24,7 +25,8 @@ class DetailScreen extends StatelessWidget {
                   children: [
                     Text('Compressor A-12', style: context.text.headlineMedium),
                     const SizedBox(height: AmdsSpacing.xxs),
-                    Text('Asset · East site', style: TextStyle(color: c.textSecondary)),
+                    Text('Asset · East site',
+                        style: TextStyle(color: c.textSecondary)),
                   ],
                 ),
               ),
@@ -43,7 +45,10 @@ class DetailScreen extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(width: 120, child: Text(row.$1, style: TextStyle(color: c.textSecondary))),
+                  SizedBox(
+                      width: 120,
+                      child: Text(row.$1,
+                          style: TextStyle(color: c.textSecondary))),
                   Expanded(child: Text(row.$2, style: context.text.bodyMedium)),
                 ],
               ),
@@ -51,7 +56,8 @@ class DetailScreen extends StatelessWidget {
           const SizedBox(height: AmdsSpacing.xl),
           AmdsButton(
             label: 'Report an issue',
-            onPressed: () => AmdsSnackbar.show(context, message: 'Issue reported', tone: AmdsStatusTone.info),
+            onPressed: () => AmdsSnackbar.show(context,
+                message: 'Issue reported', tone: AmdsStatusTone.info),
             fullWidth: true,
           ),
           const SizedBox(height: AmdsSpacing.xl),

@@ -40,7 +40,9 @@ class AmdsScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final margin = applyContentMargin ? EdgeInsets.symmetric(horizontal: _margin(context)) : EdgeInsets.zero;
+    final margin = applyContentMargin
+        ? EdgeInsets.symmetric(horizontal: _margin(context))
+        : EdgeInsets.zero;
 
     Widget content = Padding(padding: margin, child: body);
     if (scrollable) {
@@ -50,10 +52,15 @@ class AmdsScaffold extends StatelessWidget {
       );
     }
     if (banner != null) {
-      content = Column(children: [
-        Padding(padding: EdgeInsets.fromLTRB(margin.horizontal / 2, AmdsSpacing.sm, margin.horizontal / 2, 0), child: banner),
-        Expanded(child: content),
-      ]);
+      content = Column(
+        children: [
+          Padding(
+              padding: EdgeInsets.fromLTRB(margin.horizontal / 2,
+                  AmdsSpacing.sm, margin.horizontal / 2, 0),
+              child: banner),
+          Expanded(child: content),
+        ],
+      );
     }
 
     return Scaffold(
@@ -73,7 +80,11 @@ class AmdsScaffold extends StatelessWidget {
 }
 
 class AmdsNavDestination {
-  const AmdsNavDestination({required this.label, required this.icon, required this.selectedIcon, this.badgeCount});
+  const AmdsNavDestination(
+      {required this.label,
+      required this.icon,
+      required this.selectedIcon,
+      this.badgeCount});
   final String label;
   final IconData icon;
   final IconData selectedIcon;
@@ -104,19 +115,24 @@ class AmdsAdaptiveNavigation extends StatelessWidget {
     if (w >= AmdsBreakpoints.tabletLandscape) {
       return Scaffold(
         body: SafeArea(
-          child: Row(children: [
-            NavigationDrawer(
-              selectedIndex: selectedIndex,
-              onDestinationSelected: onDestinationSelected,
-              children: [
-                const SizedBox(height: AmdsSpacing.md),
-                for (final d in destinations)
-                  NavigationDrawerDestination(icon: Icon(d.icon), selectedIcon: Icon(d.selectedIcon), label: Text(d.label)),
-              ],
-            ),
-            const VerticalDivider(width: 1),
-            Expanded(child: body),
-          ]),
+          child: Row(
+            children: [
+              NavigationDrawer(
+                selectedIndex: selectedIndex,
+                onDestinationSelected: onDestinationSelected,
+                children: [
+                  const SizedBox(height: AmdsSpacing.md),
+                  for (final d in destinations)
+                    NavigationDrawerDestination(
+                        icon: Icon(d.icon),
+                        selectedIcon: Icon(d.selectedIcon),
+                        label: Text(d.label)),
+                ],
+              ),
+              const VerticalDivider(width: 1),
+              Expanded(child: body),
+            ],
+          ),
         ),
         floatingActionButton: fab,
       );
@@ -125,20 +141,25 @@ class AmdsAdaptiveNavigation extends StatelessWidget {
     if (w >= AmdsBreakpoints.tabletPortrait) {
       return Scaffold(
         body: SafeArea(
-          child: Row(children: [
-            NavigationRail(
-              selectedIndex: selectedIndex,
-              onDestinationSelected: onDestinationSelected,
-              labelType: NavigationRailLabelType.all,
-              leading: fab,
-              destinations: [
-                for (final d in destinations)
-                  NavigationRailDestination(icon: _icon(d, false), selectedIcon: _icon(d, true), label: Text(d.label)),
-              ],
-            ),
-            const VerticalDivider(width: 1),
-            Expanded(child: body),
-          ]),
+          child: Row(
+            children: [
+              NavigationRail(
+                selectedIndex: selectedIndex,
+                onDestinationSelected: onDestinationSelected,
+                labelType: NavigationRailLabelType.all,
+                leading: fab,
+                destinations: [
+                  for (final d in destinations)
+                    NavigationRailDestination(
+                        icon: _icon(d, false),
+                        selectedIcon: _icon(d, true),
+                        label: Text(d.label)),
+                ],
+              ),
+              const VerticalDivider(width: 1),
+              Expanded(child: body),
+            ],
+          ),
         ),
       );
     }
@@ -151,7 +172,10 @@ class AmdsAdaptiveNavigation extends StatelessWidget {
         onDestinationSelected: onDestinationSelected,
         destinations: [
           for (final d in destinations)
-            NavigationDestination(icon: _icon(d, false), selectedIcon: _icon(d, true), label: d.label),
+            NavigationDestination(
+                icon: _icon(d, false),
+                selectedIcon: _icon(d, true),
+                label: d.label),
         ],
       ),
     );
@@ -160,6 +184,8 @@ class AmdsAdaptiveNavigation extends StatelessWidget {
   Widget _icon(AmdsNavDestination d, bool selected) {
     final icon = Icon(selected ? d.selectedIcon : d.icon);
     if (d.badgeCount == null || d.badgeCount == 0) return icon;
-    return Badge(label: Text('${d.badgeCount! > 99 ? '99+' : d.badgeCount}'), child: icon);
+    return Badge(
+        label: Text('${d.badgeCount! > 99 ? '99+' : d.badgeCount}'),
+        child: icon);
   }
 }

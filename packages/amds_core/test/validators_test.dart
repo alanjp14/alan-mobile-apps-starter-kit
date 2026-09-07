@@ -17,7 +17,8 @@ void main() {
     });
 
     test('all runs in order', () {
-      final v = Validators.all([Validators.required(), Validators.minLength(3)]);
+      final v =
+          Validators.all([Validators.required(), Validators.minLength(3)]);
       expect(v(''), equals('This field is required.'));
       expect(v('ab'), contains('at least 3'));
       expect(v('abc'), isNull);
@@ -33,7 +34,10 @@ void main() {
       expect(ok.values.every((v) => v), isTrue);
     });
     test('rejects reuse of current', () {
-      expect(p.validate('Sup3rSecret!!', current: 'Sup3rSecret!!'), contains('different'));
+      expect(
+        p.validate('Sup3rSecret!!', current: 'Sup3rSecret!!'),
+        contains('different'),
+      );
     });
   });
 
@@ -42,7 +46,10 @@ void main() {
       const Result<int> s = Result.success(42);
       expect(s.fold(onSuccess: (v) => v * 2, onFailure: (_) => -1), 84);
       const Result<int> e = Result.failure(NotFoundFailure());
-      expect(e.fold(onSuccess: (_) => 0, onFailure: (f) => f.message), 'This item no longer exists.');
+      expect(
+        e.fold(onSuccess: (_) => 0, onFailure: (f) => f.message),
+        'This item no longer exists.',
+      );
     });
 
     test('guard catches', () async {
@@ -58,8 +65,9 @@ void main() {
       expect(f.relative(DateTime(2026, 9, 6, 12)), 'Yesterday');
     });
     test('compact number', () {
-      expect(f.compactNumber(1234), '1,234');
-      expect(f.compactNumber(12400), '12K');
+      expect(f.compactNumber(1234), '1,234'); // below 10k → grouped
+      expect(f.compactNumber(12400), '12.4K'); // at/above 10k → compact
+      expect(f.compactNumber(1200000), '1.2M');
     });
     test('currency from minor units', () {
       expect(f.currency(1299, currencyCode: 'USD'), contains('12.99'));

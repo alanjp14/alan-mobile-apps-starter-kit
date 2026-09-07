@@ -66,7 +66,9 @@ class ValidationFailure extends Failure {
   const ValidationFailure(this.fieldErrors) : super();
   final Map<String, String> fieldErrors;
   @override
-  String get message => fieldErrors.values.isNotEmpty ? fieldErrors.values.first : 'Please check the form.';
+  String get message => fieldErrors.values.isNotEmpty
+      ? fieldErrors.values.first
+      : 'Please check the form.';
 }
 
 class ServerFailure extends Failure {
@@ -94,10 +96,15 @@ sealed class Result<T> {
   bool get isSuccess => this is Success<T>;
   bool get isFailure => this is ResultError<T>;
 
-  T? get valueOrNull => switch (this) { Success<T>(:final value) => value, _ => null };
-  Failure? get failureOrNull => switch (this) { ResultError<T>(:final failure) => failure, _ => null };
+  T? get valueOrNull =>
+      switch (this) { Success<T>(:final value) => value, _ => null };
+  Failure? get failureOrNull =>
+      switch (this) { ResultError<T>(:final failure) => failure, _ => null };
 
-  R fold<R>({required R Function(T value) onSuccess, required R Function(Failure failure) onFailure}) =>
+  R fold<R>({
+    required R Function(T value) onSuccess,
+    required R Function(Failure failure) onFailure,
+  }) =>
       switch (this) {
         Success<T>(:final value) => onSuccess(value),
         ResultError<T>(:final failure) => onFailure(failure),

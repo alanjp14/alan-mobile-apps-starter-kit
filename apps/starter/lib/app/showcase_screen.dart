@@ -24,7 +24,11 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
     await Future<void>.delayed(const Duration(seconds: 1));
     if (!mounted) return;
     setState(() => _loading = false);
-    AmdsSnackbar.show(context, message: 'Saved', tone: AmdsStatusTone.success, actionLabel: 'Undo', onAction: () {});
+    AmdsSnackbar.show(context,
+        message: 'Saved',
+        tone: AmdsStatusTone.success,
+        actionLabel: 'Undo',
+        onAction: () {});
   }
 
   void _openDetail() {
@@ -54,8 +58,11 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         actions: [
           IconButton(
             tooltip: 'Toggle theme',
-            icon: Icon(context.amds.isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
-            onPressed: () => themeMode.value = context.amds.isDark ? ThemeMode.light : ThemeMode.dark,
+            icon: Icon(context.amds.isDark
+                ? Icons.light_mode_outlined
+                : Icons.dark_mode_outlined),
+            onPressed: () => themeMode.value =
+                context.amds.isDark ? ThemeMode.light : ThemeMode.dark,
           ),
         ],
       ),
@@ -71,7 +78,9 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('OPEN ITEMS', style: AmdsTextStyles.overline.copyWith(color: c.textSecondary)),
+                  Text('OPEN ITEMS',
+                      style: AmdsTextStyles.overline
+                          .copyWith(color: c.textSecondary)),
                   const SizedBox(height: AmdsSpacing.xs),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -80,13 +89,17 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                       const SizedBox(width: AmdsSpacing.sm),
                       const Padding(
                         padding: EdgeInsets.only(bottom: 6),
-                        child: AmdsStatusChip('▲ 12%', tone: AmdsStatusTone.success, showIcon: false),
+                        child: AmdsStatusChip('▲ 12%',
+                            tone: AmdsStatusTone.success, showIcon: false),
                       ),
                     ],
                   ),
                   const SizedBox(height: AmdsSpacing.xs),
-                  Text('updated ${_fmt.relative(DateTime.now().subtract(const Duration(minutes: 2)))}',
-                      style: AmdsTextStyles.caption.copyWith(color: c.textTertiary)),
+                  Text(
+                    'updated ${_fmt.relative(DateTime.now().subtract(const Duration(minutes: 2)))}',
+                    style:
+                        AmdsTextStyles.caption.copyWith(color: c.textTertiary),
+                  ),
                 ],
               ),
             ),
@@ -100,9 +113,19 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
               runSpacing: AmdsSpacing.sm,
               children: [
                 AmdsButton(label: 'Primary', onPressed: () {}),
-                const AmdsButton(label: 'Secondary', onPressed: null, variant: AmdsButtonVariant.secondary),
-                AmdsButton(label: 'Tonal', onPressed: () {}, variant: AmdsButtonVariant.tonal),
-                AmdsButton(label: 'Delete', onPressed: () {}, variant: AmdsButtonVariant.destructive, leadingIcon: Icons.delete_outline),
+                const AmdsButton(
+                    label: 'Secondary',
+                    onPressed: null,
+                    variant: AmdsButtonVariant.secondary),
+                AmdsButton(
+                    label: 'Tonal',
+                    onPressed: () {},
+                    variant: AmdsButtonVariant.tonal),
+                AmdsButton(
+                    label: 'Delete',
+                    onPressed: () {},
+                    variant: AmdsButtonVariant.destructive,
+                    leadingIcon: Icons.delete_outline),
               ],
             ),
           ),
@@ -119,16 +142,24 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
             ),
           ),
           const SizedBox(height: AmdsSpacing.md),
-          AmdsButton(label: 'Save', onPressed: _fakeSubmit, loading: _loading, fullWidth: true, size: AmdsButtonSize.lg),
+          AmdsButton(
+              label: 'Save',
+              onPressed: _fakeSubmit,
+              loading: _loading,
+              fullWidth: true,
+              size: AmdsButtonSize.lg),
 
           const AmdsSectionHeader('Loading'),
-          AmdsFadeSlideIn(index: 3, child: const SizedBox(height: 160, child: AmdsSkeletonList(rows: 2))),
+          const AmdsFadeSlideIn(
+            index: 3,
+            child: AmdsSkeletonList(rows: 2),
+          ),
 
           const AmdsSectionHeader('States'),
           AmdsFadeSlideIn(
             index: 4,
             child: SizedBox(
-              height: 220,
+              height: 300,
               child: AmdsEmptyState(
                 title: 'Nothing here yet',
                 body: 'Add your first item to get started.',

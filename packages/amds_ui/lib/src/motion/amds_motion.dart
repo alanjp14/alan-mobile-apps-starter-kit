@@ -5,7 +5,8 @@
 import 'package:amds_tokens/amds_tokens.dart';
 import 'package:flutter/material.dart';
 
-bool _reduceMotion(BuildContext context) => MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+bool _reduceMotion(BuildContext context) =>
+    MediaQuery.maybeDisableAnimationsOf(context) ?? false;
 
 /// Wraps a tappable child with a 0.96 press-scale + subtle overlay, spring-back
 /// on release. Use for cards, tiles, list rows, quick actions.
@@ -44,17 +45,20 @@ class _AmdsPressableState extends State<AmdsPressable> {
 
     Widget child = widget.child;
     if (widget.enableOverlay && _down && enabled) {
-      child = Stack(children: [
-        child,
-        Positioned.fill(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: context.amds.colors.onSurface.withValues(alpha: AmdsOpacity.pressed),
-              borderRadius: widget.borderRadius,
+      child = Stack(
+        children: [
+          child,
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: context.amds.colors.onSurface
+                    .withValues(alpha: AmdsOpacity.pressed),
+                borderRadius: widget.borderRadius,
+              ),
             ),
           ),
-        ),
-      ]);
+        ],
+      );
     }
 
     return Semantics(
@@ -97,9 +101,12 @@ class AmdsFadeSlideIn extends StatefulWidget {
   State<AmdsFadeSlideIn> createState() => _AmdsFadeSlideInState();
 }
 
-class _AmdsFadeSlideInState extends State<AmdsFadeSlideIn> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: widget.duration);
-  late final Animation<double> _t = CurvedAnimation(parent: _c, curve: AmdsMotion.decelerate);
+class _AmdsFadeSlideInState extends State<AmdsFadeSlideIn>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c =
+      AnimationController(vsync: this, duration: widget.duration);
+  late final Animation<double> _t =
+      CurvedAnimation(parent: _c, curve: AmdsMotion.decelerate);
 
   @override
   void initState() {
@@ -124,7 +131,8 @@ class _AmdsFadeSlideInState extends State<AmdsFadeSlideIn> with SingleTickerProv
       child: widget.child,
       builder: (context, child) => Opacity(
         opacity: _t.value,
-        child: Transform.translate(offset: Offset(0, widget.offsetY * (1 - _t.value)), child: child),
+        child: Transform.translate(
+            offset: Offset(0, widget.offsetY * (1 - _t.value)), child: child),
       ),
     );
   }
