@@ -55,7 +55,7 @@ jobs:
       - name: Analyze
         run: melos run analyze
 
-      - name: Test (Flutter)
+      - name: Test (Flutter — includes Alchemist CI goldens)
         run: melos run test
 
       - name: Test (pure Dart)

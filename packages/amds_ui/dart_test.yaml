@@ -1,0 +1,5 @@
+# Registers the `golden` tag that Alchemist puts on golden tests.
+#   flutter test -x golden   # skip goldens
+#   flutter test -t golden   # only goldens
+tags:
+  golden:

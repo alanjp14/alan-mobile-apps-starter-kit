@@ -50,7 +50,7 @@ flutter run
 | `melos run format` | `dart format` |
 | `melos run test` | Flutter package + app tests |
 | `melos run test:dart` | pure-Dart (`amds_core`) tests |
-| `melos run test:golden` | update golden files |
+| `melos run test:golden` | regenerate Alchemist golden baselines (`amds_ui/test/goldens/ci/`) |
 | `melos run ci` | what CI runs |
 | `node tool/validate.mjs` | validate the docs/repo |
 
@@ -122,6 +122,6 @@ for an HTTP impl; nothing above the repository interfaces changes.
 
 ## Status — Phase 1
 
-**Done:** `amds_tokens` (complete), `amds_core` (complete), `amds_motion` (route transitions · entrances · micro-interactions · switchers · `AmdsMotionScope`), `app_config` (complete), `amds_ui` (~60 components — actions · inputs (with `Form` validation) · content · navigation · **data display** (`AmdsDataTable`, chart frame, `AmdsSparkline`, pagination) · feedback · loading · state, all token-driven + dark-mode + a11y), `apps/starter`, `apps/_template` (Riverpod + go_router auth gate + 2 features + the 3 e2e flows), `widgetbook`, the token generator, CI. Verified against Flutter/Dart SDK: `dart analyze` clean, all package/app tests green (amds_motion 9, amds_ui 26, amds_core 10, apps/starter 2, apps/_template 11).
+**Done:** `amds_tokens` (complete), `amds_core` (complete), `amds_motion` (route transitions · entrances · micro-interactions · switchers · `AmdsMotionScope`), `app_config` (complete), `amds_ui` (~60 components — actions · inputs (with `Form` validation) · content · navigation · **data display** (`AmdsDataTable`, chart frame, `AmdsSparkline`, pagination) · feedback · loading · state, all token-driven + dark-mode + a11y, plus **Alchemist golden tests** light + dark), `apps/starter`, `apps/_template` (Riverpod + go_router auth gate + 2 features + the 3 e2e flows), `widgetbook`, the token generator, CI. Verified against Flutter/Dart SDK: `dart analyze` clean, all package/app tests green (amds_motion 9, amds_ui 36, amds_core 10, apps/starter 2, apps/_template 11).
 
-**Next:** composite/screen-level pieces (Filter Bar, Sort Sheet, Export flow); golden tests per component (light/dark).
+**Next:** composite/screen-level pieces (Filter Bar, Sort Sheet, Export flow).

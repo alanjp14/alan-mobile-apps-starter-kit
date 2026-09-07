@@ -29,4 +29,15 @@ Every widget: token-driven, dark-mode aware, honors reduce-motion + Dynamic Type
 
 ## Testing
 
-`flutter test` runs widget + golden tests in `test/`. Update goldens with `melos run test:golden`.
+`flutter test` runs the behaviour tests and the golden tests in `test/`.
+
+Goldens use **[Alchemist](https://pub.dev/packages/alchemist) CI mode** — text is
+rendered as blocked squares (Ahem font), shadows are off, so a single set of
+baselines in `test/goldens/ci/` is byte-identical on macOS, Windows and Linux.
+Regenerate after an intentional visual change:
+
+```bash
+melos run test:golden      # or: flutter test -t golden --update-goldens
+```
+
+Review the PNG diff like code; commit baseline changes on their own.
