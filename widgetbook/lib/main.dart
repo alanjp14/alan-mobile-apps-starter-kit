@@ -132,6 +132,93 @@ class _GalleryAppState extends State<GalleryApp> {
                   AmdsAnimatedCount(9421,
                       style: Theme.of(context).textTheme.displaySmall)),
               _entry(
+                'KPI card',
+                const AmdsKpiCard(
+                  label: 'Open items',
+                  value: 1284,
+                  delta: '12%',
+                  trend: AmdsTrend.up,
+                  footnote: 'updated 2m ago',
+                  icon: Icons.inventory_2_outlined,
+                ),
+              ),
+              _entry(
+                'Stat row',
+                const Row(
+                  children: [
+                    Expanded(
+                        child: AmdsStat(
+                            label: 'Approved',
+                            value: 92,
+                            delta: '4%',
+                            trend: AmdsTrend.up)),
+                    Expanded(
+                        child: AmdsStat(
+                            label: 'Rejected',
+                            value: 7,
+                            delta: '2%',
+                            trend: AmdsTrend.down)),
+                  ],
+                ),
+              ),
+              _entry(
+                'List group',
+                const AmdsListGroup(
+                  header: 'Preferences',
+                  children: [
+                    AmdsListItem(
+                        title: 'Notifications',
+                        leading: Icon(Icons.notifications_outlined),
+                        trailing: Icon(Icons.chevron_right)),
+                    AmdsListItem(
+                        title: 'Privacy',
+                        leading: Icon(Icons.lock_outline),
+                        trailing: Icon(Icons.chevron_right)),
+                  ],
+                ),
+              ),
+              const _SelectionDemo(),
+              const _ChipsDemo(),
+              const _SegmentedDemo(),
+              const _SearchDemo(),
+              _entry(
+                'Accordion',
+                const AmdsAccordion(
+                  title: 'Shipping details',
+                  subtitle: 'Tap to expand',
+                  child:
+                      Text('Ships in 2–3 business days via standard courier.'),
+                ),
+              ),
+              _entry(
+                'Dropdown',
+                const _DropdownDemo(),
+              ),
+              _entry('Progress',
+                  const AmdsProgressBar(value: 0.6, label: 'Upload')),
+              _entry(
+                'Bottom sheet',
+                Builder(
+                  builder: (context) => AmdsButton(
+                    label: 'Open actions sheet',
+                    variant: AmdsButtonVariant.secondary,
+                    onPressed: () => AmdsBottomSheet.actions<String>(
+                      context,
+                      title: 'Item actions',
+                      actions: const [
+                        AmdsSheetAction(
+                            label: 'Share', value: 'share', icon: Icons.share),
+                        AmdsSheetAction(
+                            label: 'Delete',
+                            value: 'delete',
+                            icon: Icons.delete_outline,
+                            destructive: true),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              _entry(
                 'Motion · route transitions',
                 Wrap(
                   spacing: 8,
@@ -276,5 +363,152 @@ class _SwitcherDemoState extends State<_SwitcherDemo> {
             ),
           ],
         ),
+      );
+}
+
+Widget _section(String title, Widget child) => Padding(
+      padding: const EdgeInsets.only(bottom: AmdsSpacing.xl),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [AmdsSectionHeader(title), child],
+      ),
+    );
+
+class _SelectionDemo extends StatefulWidget {
+  const _SelectionDemo();
+  @override
+  State<_SelectionDemo> createState() => _SelectionDemoState();
+}
+
+class _SelectionDemoState extends State<_SelectionDemo> {
+  bool _check = true;
+  bool _switch = false;
+  String _radio = 'a';
+  double _slider = 0.4;
+
+  @override
+  Widget build(BuildContext context) => _section(
+        'Selection controls',
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AmdsCheckboxTile(
+              label: 'Email me updates',
+              value: _check,
+              onChanged: (v) => setState(() => _check = v ?? false),
+            ),
+            AmdsSwitchTile(
+              label: 'Offline mode',
+              value: _switch,
+              onChanged: (v) => setState(() => _switch = v),
+            ),
+            AmdsRadioGroup<String>(
+              groupValue: _radio,
+              onChanged: (v) => setState(() => _radio = v ?? 'a'),
+              children: const [
+                AmdsRadioTile(value: 'a', label: 'Standard'),
+                AmdsRadioTile(value: 'b', label: 'Priority'),
+              ],
+            ),
+            AmdsSlider(
+              label: 'Budget',
+              value: _slider,
+              valueLabel: (v) => '${(v * 100).round()}%',
+              onChanged: (v) => setState(() => _slider = v),
+            ),
+          ],
+        ),
+      );
+}
+
+class _ChipsDemo extends StatefulWidget {
+  const _ChipsDemo();
+  @override
+  State<_ChipsDemo> createState() => _ChipsDemoState();
+}
+
+class _ChipsDemoState extends State<_ChipsDemo> {
+  Set<String> _filters = {'Open'};
+  String? _choice = 'All';
+
+  @override
+  Widget build(BuildContext context) => _section(
+        'Chips',
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AmdsFilterChips<String>(
+              options: const ['Open', 'In progress', 'Done'],
+              selected: _filters,
+              labelOf: (s) => s,
+              onChanged: (next) => setState(() => _filters = next),
+            ),
+            const SizedBox(height: AmdsSpacing.sm),
+            AmdsChoiceChips<String>(
+              options: const ['All', 'Mine', 'Team'],
+              value: _choice,
+              labelOf: (s) => s,
+              onChanged: (v) => setState(() => _choice = v),
+            ),
+          ],
+        ),
+      );
+}
+
+class _SegmentedDemo extends StatefulWidget {
+  const _SegmentedDemo();
+  @override
+  State<_SegmentedDemo> createState() => _SegmentedDemoState();
+}
+
+class _SegmentedDemoState extends State<_SegmentedDemo> {
+  String _view = 'List';
+  @override
+  Widget build(BuildContext context) => _section(
+        'Segmented control',
+        AmdsSegmentedControl<String>(
+          segments: const ['List', 'Board', 'Calendar'],
+          value: _view,
+          onChanged: (v) => setState(() => _view = v),
+        ),
+      );
+}
+
+class _SearchDemo extends StatefulWidget {
+  const _SearchDemo();
+  @override
+  State<_SearchDemo> createState() => _SearchDemoState();
+}
+
+class _SearchDemoState extends State<_SearchDemo> {
+  String _q = '';
+  @override
+  Widget build(BuildContext context) => _section(
+        'Search bar',
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AmdsSearchBar(onChanged: (q) => setState(() => _q = q)),
+            const SizedBox(height: AmdsSpacing.xs),
+            Text('query: "$_q"', style: Theme.of(context).textTheme.bodySmall),
+          ],
+        ),
+      );
+}
+
+class _DropdownDemo extends StatefulWidget {
+  const _DropdownDemo();
+  @override
+  State<_DropdownDemo> createState() => _DropdownDemoState();
+}
+
+class _DropdownDemoState extends State<_DropdownDemo> {
+  String? _role;
+  @override
+  Widget build(BuildContext context) => AmdsDropdown<String>(
+        value: _role,
+        items: const ['Admin', 'Editor', 'Viewer'],
+        labelOf: (s) => s,
+        onChanged: (v) => setState(() => _role = v),
       );
 }
