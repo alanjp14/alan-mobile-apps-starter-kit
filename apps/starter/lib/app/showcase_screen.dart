@@ -33,11 +33,9 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
 
   void _openDetail() {
     Navigator.of(context).push(
-      PageRouteBuilder<void>(
-        transitionDuration: AmdsMotion.moderate,
-        reverseTransitionDuration: AmdsMotion.base,
-        pageBuilder: (_, __, ___) => const DetailScreen(),
-        transitionsBuilder: amdsSharedAxisTransition,
+      AmdsPageRoute<void>(
+        builder: (_) => const DetailScreen(),
+        transition: AmdsTransition.sharedAxisX,
       ),
     );
   }

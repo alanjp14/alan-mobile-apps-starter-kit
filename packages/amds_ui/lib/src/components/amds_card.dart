@@ -1,9 +1,8 @@
 // AMDS v1.0 · Card. See docs/component-library/design-specs.md C1.
 
+import 'package:amds_motion/amds_motion.dart';
 import 'package:amds_tokens/amds_tokens.dart';
 import 'package:flutter/material.dart';
-
-import '../motion/amds_motion.dart';
 
 enum AmdsCardVariant { outlined, elevated, filled }
 
@@ -49,6 +48,7 @@ class AmdsCard extends StatelessWidget {
       onTap: onTap,
       borderRadius: AmdsRadius.brLg,
       pressedScale: 0.985,
+      overlayColor: c.onSurface.withValues(alpha: AmdsOpacity.pressed),
       child: Semantics(button: true, label: semanticLabel, child: surface),
     );
   }

@@ -18,7 +18,8 @@
 /// docs/component-library/ using prompts/component-library-generator.md.
 library;
 
-// re-export tokens so apps import one package
+// re-export tokens + motion so apps import one package
+export 'package:amds_motion/amds_motion.dart';
 export 'package:amds_tokens/amds_tokens.dart';
 
 export 'src/components/amds_button.dart';
@@ -27,6 +28,5 @@ export 'src/components/amds_feedback.dart';
 export 'src/components/amds_misc.dart';
 export 'src/components/amds_text_field.dart';
 export 'src/layout/amds_scaffold.dart';
-export 'src/motion/amds_motion.dart';
 export 'src/state/amds_skeleton.dart';
 export 'src/state/amds_states.dart';

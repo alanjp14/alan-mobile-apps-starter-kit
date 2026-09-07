@@ -51,8 +51,16 @@ Measure it, don't guess — §7.
 
 ### 4.2 Flutter
 
-- **Screen transitions:** `go_router` + `CustomTransitionPage` using the `animations` package (`SharedAxisTransition`, `FadeThroughTransition`, `OpenContainer` for container-transform). iOS route → `CupertinoPage` (native interactive edge-swipe for free).
-- **Springs:** `AnimatedScale` / `AnimatedSlide` / `AnimatedOpacity` with `curve: Curves.easeOutBack` (≈ `spring`), or a real `SpringSimulation` via an `AnimationController` for grabbable things. `flutter_animate` for declarative one-liners.
+> **First-party:** the `amds_motion` package implements this section — route
+> transitions (`AmdsPageRoute`, `AmdsPageTransitions`, `AmdsPageTransitionsBuilder`),
+> entrances (`AmdsFadeSlideIn`, `AmdsScaleIn`, `AmdsStagger`), micro-interactions
+> (`AmdsPressable`, `AmdsAnimatedCount`, `AmdsShake`, `AmdsPulse`), and content
+> swaps (`AmdsSwitcher`, `AmdsCrossFade`), all wired to the motion tokens and
+> gated by `AmdsMotionScope` + the OS reduce-motion setting. Use it before
+> reaching for third-party packages. See `packages/amds_motion/README.md`.
+
+- **Screen transitions:** `go_router` + `CustomTransitionPage(transitionsBuilder: AmdsPageTransitions.sharedAxisX)`, or `AmdsPageRoute` for `Navigator.push`, or `AmdsPageTransitionsBuilder` in `ThemeData.pageTransitionsTheme` to cover every platform route at once. For a true container-transform, the `animations` package's `OpenContainer` still has no first-party equivalent.
+- **Springs:** `AmdsPressable` (press-scale + spring-back) and the token curve `AmdsMotion.spring` (`Cubic(0.34, 1.56, 0.64, 1.0)`); for grabbable things drive a real `SpringSimulation` via an `AnimationController`.
 - **The golden rule:** wrap the animated subtree so only it rebuilds — `AnimatedBuilder(animation, builder:)` with the expensive child passed as `child:` (built once). Animate via `Transform` / `Opacity` / `FractionalTranslation`, not `Padding`/`SizedBox`.
 - **Lists:** `SliverAnimatedList` / `AnimatedList` with keyed items; `flutter_staggered_animations` for the first-paint stagger (cap at 8). Never `AnimatedContainer` on row height in a scrolling list.
 - **Hero:** `Hero` widget for list→detail; keep the flight shape simple.

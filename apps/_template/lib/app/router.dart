@@ -1,6 +1,7 @@
 // Central route table. Add routes here; keep screen widgets free of navigation
 // wiring so they stay unit-testable. See docs/starter-template/navigation.md.
 
+import 'package:amds_ui/amds_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +14,21 @@ abstract final class Routes {
   static String itemDetail(String id) => '/items/$id';
 }
 
+/// A go_router page that uses an [AmdsTransition]. Default is shared-axis-X;
+/// pass `AmdsTransition.sharedAxisY` for routes that "come up".
+Page<void> _amdsPage(
+  Widget child, {
+  AmdsTransition transition = AmdsTransition.sharedAxisX,
+  LocalKey? key,
+}) =>
+    CustomTransitionPage<void>(
+      key: key,
+      child: child,
+      transitionDuration: AmdsMotion.moderate,
+      reverseTransitionDuration: AmdsMotion.base,
+      transitionsBuilder: AmdsPageTransitions.resolve(transition),
+    );
+
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: Routes.items,
@@ -20,13 +36,19 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.items,
         name: 'items',
-        builder: (context, state) => const ItemsListScreen(),
+        pageBuilder: (context, state) => _amdsPage(
+          const ItemsListScreen(),
+          key: state.pageKey,
+          transition: AmdsTransition.fadeThrough,
+        ),
         routes: [
           GoRoute(
             path: 'items/:id',
             name: 'itemDetail',
-            builder: (context, state) =>
-                ItemDetailScreen(id: state.pathParameters['id']!),
+            pageBuilder: (context, state) => _amdsPage(
+              ItemDetailScreen(id: state.pathParameters['id']!),
+              key: state.pageKey,
+            ),
           ),
         ],
       ),

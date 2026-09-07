@@ -1,6 +1,6 @@
 # amds_ui
 
-AMDS v1.0 Flutter component library. Re-exports `amds_tokens`, so apps import only this package.
+AMDS v1.0 Flutter component library. Re-exports `amds_tokens` **and `amds_motion`**, so apps import only this package.
 
 ```dart
 import 'package:amds_ui/amds_ui.dart';
@@ -16,7 +16,7 @@ import 'package:amds_ui/amds_ui.dart';
 | Feedback | `AmdsBanner`, `AmdsSnackbar.show(...)`, `AmdsDialogs.confirm(...)` |
 | Layout | `AmdsScaffold`, `AmdsAdaptiveNavigation` (bottom nav → rail → drawer) |
 | State | `AmdsLoadingState`, `AmdsEmptyState`, `AmdsErrorState`, `AmdsOfflineBanner`, `AmdsSkeleton`, `AmdsSkeletonList` |
-| Motion | `AmdsPressable`, `AmdsFadeSlideIn`, `AmdsAnimatedCount`, `amdsSharedAxisTransition` |
+| Motion (from [`amds_motion`](../amds_motion/README.md)) | `AmdsPageRoute` / `AmdsPageTransitions`, `AmdsFadeSlideIn`, `AmdsScaleIn`, `AmdsStagger`, `AmdsPressable`, `AmdsAnimatedCount`, `AmdsShake`, `AmdsPulse`, `AmdsSwitcher`, `AmdsCrossFade` |
 
 Every widget: token-driven, dark-mode aware, honors reduce-motion + Dynamic Type, ≥44dp targets, `Semantics` for role/name/state.
 

@@ -9,10 +9,11 @@ analysis_options.yaml   shared lint (very strict)
 tool/build_tokens.mjs   design-tokens/tokens.json  ->  packages/amds_tokens/lib/src/tokens.dart
 
 packages/
-  amds_tokens/   palette · scales · typography · motion · ThemeData · AmdsThemeExt   (tokens.dart is GENERATED)
+  amds_tokens/   palette · scales · typography · motion tokens · ThemeData · AmdsThemeExt (tokens.dart is GENERATED)
   amds_core/     Result<T>/Failure · Formatters · Validators · PasswordPolicy         (pure Dart)
+  amds_motion/   route transitions · entrances · micro-interactions · switchers    (reduce-motion aware)
   app_config/    AppConfig · Flavor · FeatureFlags · BrandTheme (white-label)
-  amds_ui/       Amds* widgets (starter set) · adaptive layout · motion · state screens
+  amds_ui/       Amds* widgets (starter set) · adaptive layout · state screens · re-exports amds_motion
 apps/
   _template/     clean-architecture starter — clone this to begin a new app
                  (Riverpod DI · go_router · domain/data/presentation · mock repo)
@@ -75,6 +76,30 @@ MaterialApp(
 
 White-label: `BrandTheme(primary: Color(0xFF2563EB)).light()` — recolors semantic tokens only.
 
+## Motion
+
+`amds_motion` (re-exported by `amds_ui`) is the shared animation toolkit — Material 3
+shared-axis / fade-through route transitions, staggered entrances, tap/press
+micro-interactions, and content-swap animations. All of it honors the OS "reduce
+motion" setting plus an app-level `AmdsMotionScope` override, and animates
+transform/opacity only.
+
+```dart
+AmdsMotionScope(
+  settings: const AmdsMotionSettings(speed: 1.0),   // global speed / disable
+  child: MaterialApp.router(/* ... */),
+);
+
+// go_router
+pageBuilder: (context, state) => CustomTransitionPage(
+  key: state.pageKey,
+  child: DetailScreen(id: state.pathParameters['id']!),
+  transitionsBuilder: AmdsPageTransitions.sharedAxisX,
+);
+```
+
+See [`packages/amds_motion/README.md`](packages/amds_motion/README.md).
+
 ## Clone a new app
 
 ```bash
@@ -95,6 +120,6 @@ presentation) that exercises every state — loading, empty, error, offline — 
 
 ## Status — Phase 1
 
-**Done:** `amds_tokens` (complete), `amds_core` (complete), `app_config` (complete), `amds_ui` (a **starter set** — ~12 components + layout + motion + state widgets), `apps/starter`, `apps/_template` (Riverpod + go_router + repository layer), `widgetbook`, the token generator, CI. Verified against Flutter/Dart SDK: `dart analyze` clean, all package/app tests green.
+**Done:** `amds_tokens` (complete), `amds_core` (complete), `amds_motion` (route transitions · entrances · micro-interactions · switchers · `AmdsMotionScope`), `app_config` (complete), `amds_ui` (a **starter set** — ~12 components + layout + state widgets), `apps/starter`, `apps/_template` (Riverpod + go_router + AMDS route transitions + repository layer), `widgetbook`, the token generator, CI. Verified against Flutter/Dart SDK: `dart analyze` clean, all package/app tests green (amds_motion 9, amds_ui 4, amds_core 10, apps/starter 2, apps/_template 5).
 
 **Next:** expand `amds_ui` to the full ~40 components in [`docs/component-library/`](docs/component-library/README.md) (use [`prompts/component-library-generator.md`](prompts/component-library-generator.md)); add golden tests; add the 3 core e2e flows.

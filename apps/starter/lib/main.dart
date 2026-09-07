@@ -17,24 +17,27 @@ class StarterApp extends StatelessWidget {
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeMode,
       builder: (context, mode, _) {
-        return MaterialApp(
-          title: 'AMDS Starter',
-          debugShowCheckedModeBanner: false,
-          theme: AmdsTheme.light(),
-          darkTheme: AmdsTheme.dark(),
-          themeMode: mode,
-          // clamp text scale to the AMDS range while honoring the user
-          builder: (context, child) {
-            final mq = MediaQuery.of(context);
-            return MediaQuery(
-              data: mq.copyWith(
-                textScaler: mq.textScaler
-                    .clamp(minScaleFactor: 0.85, maxScaleFactor: 2.0),
-              ),
-              child: child!,
-            );
-          },
-          home: const ShowcaseScreen(),
+        return AmdsMotionScope(
+          settings: const AmdsMotionSettings(),
+          child: MaterialApp(
+            title: 'AMDS Starter',
+            debugShowCheckedModeBanner: false,
+            theme: AmdsTheme.light(),
+            darkTheme: AmdsTheme.dark(),
+            themeMode: mode,
+            // clamp text scale to the AMDS range while honoring the user
+            builder: (context, child) {
+              final mq = MediaQuery.of(context);
+              return MediaQuery(
+                data: mq.copyWith(
+                  textScaler: mq.textScaler
+                      .clamp(minScaleFactor: 0.85, maxScaleFactor: 2.0),
+                ),
+                child: child!,
+              );
+            },
+            home: const ShowcaseScreen(),
+          ),
         );
       },
     );

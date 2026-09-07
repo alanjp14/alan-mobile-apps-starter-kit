@@ -1,5 +1,5 @@
-name: amds_ui
-description: AMDS v1.0 Flutter component library — Amds* widgets, adaptive layout, motion, and state screens.
+name: amds_motion
+description: AMDS v1.0 motion system — route transitions, entrances, micro-interactions. Reduce-motion aware, transform/opacity only.
 version: 1.0.0
 publish_to: none
 resolution: workspace
@@ -13,8 +13,6 @@ dependencies:
     sdk: flutter
   amds_tokens:
     path: ../amds_tokens
-  amds_motion:
-    path: ../amds_motion
 
 dev_dependencies:
   flutter_lints: ^5.0.0
