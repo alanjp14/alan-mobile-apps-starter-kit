@@ -13,7 +13,7 @@ packages/
   amds_core/     Result<T>/Failure · Formatters · Validators · PasswordPolicy         (pure Dart)
   amds_motion/   route transitions · entrances · micro-interactions · switchers    (reduce-motion aware)
   app_config/    AppConfig · Flavor · FeatureFlags · BrandTheme (white-label)
-  amds_ui/       ~45 Amds* widgets · adaptive layout · state screens · re-exports amds_motion
+  amds_ui/       ~60 Amds* widgets · data table · charts frame · adaptive layout · state screens · re-exports amds_motion
 apps/
   _template/     clean-architecture starter — clone this to begin a new app
                  (Riverpod DI · go_router · domain/data/presentation · mock repo)
@@ -120,6 +120,6 @@ presentation) that exercises every state — loading, empty, error, offline — 
 
 ## Status — Phase 1
 
-**Done:** `amds_tokens` (complete), `amds_core` (complete), `amds_motion` (route transitions · entrances · micro-interactions · switchers · `AmdsMotionScope`), `app_config` (complete), `amds_ui` (~45 components — actions · inputs · content · navigation · feedback · loading · state, all token-driven + dark-mode + a11y), `apps/starter`, `apps/_template` (Riverpod + go_router + AMDS route transitions + repository layer), `widgetbook`, the token generator, CI. Verified against Flutter/Dart SDK: `dart analyze` clean, all package/app tests green (amds_motion 9, amds_ui 19, amds_core 10, apps/starter 2, apps/_template 5).
+**Done:** `amds_tokens` (complete), `amds_core` (complete), `amds_motion` (route transitions · entrances · micro-interactions · switchers · `AmdsMotionScope`), `app_config` (complete), `amds_ui` (~60 components — actions · inputs · content · navigation · **data display** (`AmdsDataTable`, chart frame, `AmdsSparkline`, pagination) · feedback · loading · state, all token-driven + dark-mode + a11y), `apps/starter`, `apps/_template` (Riverpod + go_router + AMDS route transitions + repository layer), `widgetbook`, the token generator, CI. Verified against Flutter/Dart SDK: `dart analyze` clean, all package/app tests green (amds_motion 9, amds_ui 25, amds_core 10, apps/starter 2, apps/_template 5).
 
-**Next:** the remaining data components (Data Table, Chart Container, Timeline, Breadcrumb, Time Picker, rich Tooltip) in [`docs/component-library/`](docs/component-library/README.md); golden tests per component (light/dark); the 3 core e2e flows.
+**Next:** composite/screen-level pieces (Filter Bar, Sort Sheet, Export flow); golden tests per component (light/dark); the 3 core e2e flows.

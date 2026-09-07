@@ -197,6 +197,73 @@ class _GalleryAppState extends State<GalleryApp> {
               _entry('Progress',
                   const AmdsProgressBar(value: 0.6, label: 'Upload')),
               _entry(
+                'Sparkline',
+                const AmdsCard(
+                  child: SizedBox(
+                    height: 40,
+                    child: AmdsSparkline(
+                        values: [3, 5, 4, 7, 6, 9, 8, 12, 10, 14]),
+                  ),
+                ),
+              ),
+              _entry(
+                'Chart container',
+                const AmdsChartContainer(
+                  title: 'Revenue',
+                  subtitle: 'Last 30 days',
+                  legend: AmdsLegend(items: [
+                    AmdsLegendItem(label: 'This month', color: Colors.green),
+                    AmdsLegendItem(label: 'Last month', color: Colors.grey),
+                  ]),
+                  child: Center(child: Text('‹ your chart widget ›')),
+                ),
+              ),
+              _entry(
+                'Timeline',
+                const AmdsTimeline(tiles: [
+                  AmdsTimelineTile(
+                      title: 'Request submitted',
+                      subtitle: 'by [USER_NAME]',
+                      timestamp: 'Mon 09:12',
+                      tone: AmdsStatusTone.success),
+                  AmdsTimelineTile(
+                      title: 'Manager approved',
+                      timestamp: 'Mon 14:03',
+                      tone: AmdsStatusTone.success),
+                  AmdsTimelineTile(
+                      title: 'Finance review',
+                      subtitle: 'Waiting on [ROLE_NAME]',
+                      current: true),
+                  AmdsTimelineTile(title: 'Disbursed'),
+                ]),
+              ),
+              _entry(
+                'Breadcrumb',
+                AmdsBreadcrumb(crumbs: [
+                  AmdsCrumb('Home', onTap: () {}),
+                  AmdsCrumb('Sites', onTap: () {}),
+                  AmdsCrumb('Plant 4', onTap: () {}),
+                  const AmdsCrumb('Compressor A-12'),
+                ]),
+              ),
+              const _DataTableDemo(),
+              const _PickersDemo(),
+              const _PaginationDemo(),
+              _entry(
+                'Tooltip / info dot',
+                Row(
+                  children: [
+                    Text('Annual recurring revenue',
+                        style: Theme.of(context).textTheme.bodyMedium),
+                    const SizedBox(width: 4),
+                    const AmdsInfoDot(
+                      title: 'ARR',
+                      body: 'Normalised yearly value of active subscriptions.',
+                    ),
+                  ],
+                ),
+              ),
+              _entry(
                 'Bottom sheet',
                 Builder(
                   builder: (context) => AmdsButton(
@@ -510,5 +577,123 @@ class _DropdownDemoState extends State<_DropdownDemo> {
         items: const ['Admin', 'Editor', 'Viewer'],
         labelOf: (s) => s,
         onChanged: (v) => setState(() => _role = v),
+      );
+}
+
+class _DataTableDemo extends StatefulWidget {
+  const _DataTableDemo();
+  @override
+  State<_DataTableDemo> createState() => _DataTableDemoState();
+}
+
+class _AssetRow {
+  const _AssetRow(this.id, this.name, this.owner, this.amount);
+  final String id;
+  final String name;
+  final String owner;
+  final int amount;
+}
+
+class _DataTableDemoState extends State<_DataTableDemo> {
+  final _rows = <_AssetRow>[
+    const _AssetRow('a1', 'Compressor A-12', 'P. Nair', 12400),
+    const _AssetRow('a2', 'Pump Station 3', 'S. Adeyemi', 3120),
+    const _AssetRow('a3', 'Conveyor Belt 7', 'M. Chen', 8730),
+  ];
+  int _sortCol = 3;
+  bool _asc = false;
+  Set<Object> _selected = {};
+
+  @override
+  Widget build(BuildContext context) {
+    final sorted = [..._rows]..sort((a, b) {
+        final cmp = switch (_sortCol) {
+          0 => a.name.compareTo(b.name),
+          3 => a.amount.compareTo(b.amount),
+          _ => 0,
+        };
+        return _asc ? cmp : -cmp;
+      });
+    return _section(
+      'Data table',
+      SizedBox(
+        height: 220,
+        child: AmdsDataTable<_AssetRow>(
+          rows: sorted,
+          keyOf: (r) => r.id,
+          rowIdentifier: (r) => r.name,
+          sortColumnIndex: _sortCol,
+          sortAscending: _asc,
+          selected: _selected,
+          onSelectionChanged: (s) => setState(() => _selected = s),
+          onSort: (i, asc) => setState(() {
+            _sortCol = i;
+            _asc = asc;
+          }),
+          onRowTap: (_) {},
+          columns: [
+            AmdsDataColumn(
+                label: 'Name', sortable: true, cell: (r) => Text(r.name)),
+            AmdsDataColumn(
+                label: 'Owner', minWidth: 110, cell: (r) => Text(r.owner)),
+            AmdsDataColumn(
+                label: 'Status',
+                minWidth: 120,
+                cell: (_) => const AmdsStatusChip('Active',
+                    tone: AmdsStatusTone.success)),
+            AmdsDataColumn(
+                label: 'Amount',
+                numeric: true,
+                sortable: true,
+                cell: (r) => Text('${r.amount}')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PickersDemo extends StatefulWidget {
+  const _PickersDemo();
+  @override
+  State<_PickersDemo> createState() => _PickersDemoState();
+}
+
+class _PickersDemoState extends State<_PickersDemo> {
+  DateTime? _date;
+  TimeOfDay? _time;
+  @override
+  Widget build(BuildContext context) => _section(
+        'Date / time fields',
+        Column(
+          children: [
+            AmdsDateField(
+                value: _date, onChanged: (d) => setState(() => _date = d)),
+            const SizedBox(height: AmdsSpacing.md),
+            AmdsTimeField(
+                value: _time, onChanged: (t) => setState(() => _time = t)),
+          ],
+        ),
+      );
+}
+
+class _PaginationDemo extends StatefulWidget {
+  const _PaginationDemo();
+  @override
+  State<_PaginationDemo> createState() => _PaginationDemoState();
+}
+
+class _PaginationDemoState extends State<_PaginationDemo> {
+  int _page = 1;
+  @override
+  Widget build(BuildContext context) => _section(
+        'Pagination',
+        AmdsPagination(
+          page: _page,
+          pageCount: 9,
+          totalItems: 210,
+          pageSize: 25,
+          onPageChanged: (p) => setState(() => _page = p),
+        ),
       );
 }
