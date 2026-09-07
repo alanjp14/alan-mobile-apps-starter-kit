@@ -39,18 +39,20 @@ jobs:
         with:
           node-version: 20
 
-      - name: Token generator is up to date
-        run: |
-          node tool/build_tokens.mjs
-          dart format packages/amds_tokens/lib/src/tokens.dart
-          git diff --exit-code packages/amds_tokens/lib/src/tokens.dart \
-            || (echo "::error::amds_tokens is stale — run 'node tool/build_tokens.mjs && dart format packages/amds_tokens/lib/src/tokens.dart' and commit" && exit 1)
-
       - name: Resolve workspace
         run: flutter pub get
 
       - name: Melos bootstrap
         run: dart pub global activate melos && melos bootstrap
+
+      - name: Token generator is up to date
+        # after `pub get` so `dart format` sees each package's language version
+        # (amds_tokens is `sdk: ^3.6.0` → the short style) via package_config.json
+        run: |
+          node tool/build_tokens.mjs
+          dart format packages/amds_tokens/lib/src/tokens.dart
+          git diff --exit-code packages/amds_tokens/lib/src/tokens.dart \
+            || (echo "::error::amds_tokens is stale — run 'node tool/build_tokens.mjs && dart format packages/amds_tokens/lib/src/tokens.dart' and commit" && exit 1)
 
       - name: Format check (advisory in v1.0 — run `melos run format` locally)
         continue-on-error: true
