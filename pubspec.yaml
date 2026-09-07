@@ -13,6 +13,7 @@ workspace:
   - packages/amds_core
   - packages/app_config
   - packages/amds_ui
+  - apps/_template
   - apps/starter
   - widgetbook
 

@@ -14,6 +14,8 @@ packages/
   app_config/    AppConfig · Flavor · FeatureFlags · BrandTheme (white-label)
   amds_ui/       Amds* widgets (starter set) · adaptive layout · motion · state screens
 apps/
+  _template/     clean-architecture starter — clone this to begin a new app
+                 (Riverpod DI · go_router · domain/data/presentation · mock repo)
   starter/       the reference app — a showcase on mock data
 widgetbook/      component gallery (light + dark), dependency-free
 ```
@@ -73,8 +75,26 @@ MaterialApp(
 
 White-label: `BrandTheme(primary: Color(0xFF2563EB)).light()` — recolors semantic tokens only.
 
+## Clone a new app
+
+```bash
+cp -r apps/_template apps/my_app
+#   → rename `name:` in apps/my_app/pubspec.yaml
+#   → add `apps/my_app` to the workspace list in the root pubspec.yaml
+#   → replace the [PLACEHOLDER] strings, drop in a BrandTheme + AppConfig
+#   → delete the `items` feature once your first real feature lands
+flutter pub get && cd apps/my_app && flutter test
+```
+
+`apps/_template` wires the architecture from [`docs/starter-template/`](docs/starter-template/README.md):
+Riverpod composition root (`lib/core/di.dart`), a central `go_router` table
+(`lib/app/router.dart`), and a worked `items` feature (domain / data /
+presentation) that exercises every state — loading, empty, error, offline — on a
+`MockItemsRepository`. Swap the mock for an HTTP impl; nothing above the
+`ItemsRepository` interface changes.
+
 ## Status — Phase 1
 
-**Done:** `amds_tokens` (complete), `amds_core` (complete), `app_config` (complete), `amds_ui` (a **starter set** — ~12 components + layout + motion + state widgets), `apps/starter`, `widgetbook`, the token generator, CI.
+**Done:** `amds_tokens` (complete), `amds_core` (complete), `app_config` (complete), `amds_ui` (a **starter set** — ~12 components + layout + motion + state widgets), `apps/starter`, `apps/_template` (Riverpod + go_router + repository layer), `widgetbook`, the token generator, CI. Verified against Flutter/Dart SDK: `dart analyze` clean, all package/app tests green.
 
-**Next:** expand `amds_ui` to the full ~40 components in [`docs/component-library/`](docs/component-library/README.md) (use [`prompts/component-library-generator.md`](prompts/component-library-generator.md)); add golden tests; wire Riverpod + go_router + a repository layer per [`docs/starter-template/`](docs/starter-template/README.md); build the `_template` app; add the 3 core e2e flows.
+**Next:** expand `amds_ui` to the full ~40 components in [`docs/component-library/`](docs/component-library/README.md) (use [`prompts/component-library-generator.md`](prompts/component-library-generator.md)); add golden tests; add the 3 core e2e flows.
