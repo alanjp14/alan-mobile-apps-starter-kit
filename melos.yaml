@@ -1,13 +1,14 @@
 name: amds
 
+# This is a Dart pub *workspace* (see the root pubspec.yaml `workspace:` key),
+# so `flutter pub get` at the root already resolves every package — there is no
+# `melos bootstrap` step. Melos is used only as a task runner for the scripts
+# below.
+
 packages:
   - packages/*
   - apps/*
   - widgetbook
-
-command:
-  bootstrap:
-    runPubGetInParallel: true
 
 scripts:
   analyze:
@@ -16,38 +17,36 @@ scripts:
 
   format:
     description: Format all Dart
-    run: dart format --set-exit-if-changed .
+    run: dart format packages apps widgetbook
+
+  format:check:
+    description: Fail if anything is unformatted
+    run: dart format --output=none --set-exit-if-changed packages apps widgetbook
 
   test:
-    description: Run Flutter package + app tests
-    run: flutter test
+    description: Run Flutter package + app tests (incl. Alchemist goldens)
+    exec: flutter test
     packageFilters:
       dirExists: test
       flutter: true
 
   test:dart:
     description: Run pure-Dart package tests
-    run: dart test
+    exec: dart test
     packageFilters:
       dirExists: test
       flutter: false
 
   test:golden:
-    description: Update golden files
-    run: flutter test --update-goldens
+    description: Regenerate Alchemist golden baselines
+    exec: flutter test -t golden --update-goldens
     packageFilters:
       dirExists: test
       flutter: true
 
   tokens:
     description: Regenerate packages/amds_tokens from design-tokens/tokens.json
-    run: node tool/build_tokens.mjs
-
-  gen:
-    description: Run build_runner where configured
-    run: dart run build_runner build --delete-conflicting-outputs
-    packageFilters:
-      dependsOn: build_runner
+    run: node tool/build_tokens.mjs && dart format packages/amds_tokens/lib/src/tokens.dart
 
   ci:
     description: What CI runs

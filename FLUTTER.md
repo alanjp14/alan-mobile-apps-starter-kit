@@ -27,13 +27,11 @@ widgetbook/      component gallery (light + dark), dependency-free
 # 1. install the toolchain
 flutter --version          # need >= 3.27 (stable)
 
-# 2. regenerate tokens (optional — committed output is current)
-node tool/build_tokens.mjs
-
-# 3. resolve + bootstrap
+# 2. resolve — one `pub get` at the root covers the whole pub workspace
 flutter pub get
-dart pub global activate melos
-melos bootstrap
+
+# 3. (optional) Melos as a task runner for the scripts below
+dart pub global activate melos 6.3.3   # note: pin v6 — v8 drops melos.yaml
 
 # 4. run the demo (generates android/ ios/ the first time)
 cd apps/starter
@@ -41,18 +39,25 @@ flutter create --org com.example --project-name starter .
 flutter run
 ```
 
+There is **no `melos bootstrap`** — this is a native Dart pub workspace
+(`pubspec.yaml` `workspace:` key), so `flutter pub get` at the root resolves
+every package. Melos is only a convenience task runner.
+
 ## Everyday commands
 
 | Command | Does |
 |---|---|
-| `melos run tokens` | regenerate `amds_tokens` from `design-tokens/tokens.json` |
-| `melos run analyze` | static analysis across the workspace |
-| `melos run format` | `dart format` |
-| `melos run test` | Flutter package + app tests |
+| `melos run tokens` | regenerate `amds_tokens` from `design-tokens/tokens.json` + format |
+| `melos run analyze` | `dart analyze .` across the workspace |
+| `melos run format` | `dart format packages apps widgetbook` |
+| `melos run test` | Flutter package + app tests (incl. Alchemist goldens) |
 | `melos run test:dart` | pure-Dart (`amds_core`) tests |
 | `melos run test:golden` | regenerate Alchemist golden baselines (`amds_ui/test/goldens/ci/`) |
-| `melos run ci` | what CI runs |
 | `node tool/validate.mjs` | validate the docs/repo |
+
+Melos scripts that fan out per package (`test`, `test:dart`, `test:golden`)
+need `melos` on `PATH` (global activate) and the `--no-select` flag in a
+non-interactive shell. CI skips Melos and runs the underlying commands directly.
 
 ## Using it in a product app
 

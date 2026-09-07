@@ -39,11 +39,10 @@ jobs:
         with:
           node-version: 20
 
+      # Dart pub workspace: one `pub get` at the root resolves every package.
+      # No `melos bootstrap` (Melos is just a local task runner).
       - name: Resolve workspace
         run: flutter pub get
-
-      - name: Melos bootstrap
-        run: dart pub global activate melos && melos bootstrap
 
       - name: Token generator is up to date
         # after `pub get` so `dart format` sees each package's language version
@@ -52,17 +51,21 @@ jobs:
           node tool/build_tokens.mjs
           dart format packages/amds_tokens/lib/src/tokens.dart
           git diff --exit-code packages/amds_tokens/lib/src/tokens.dart \
-            || (echo "::error::amds_tokens is stale — run 'node tool/build_tokens.mjs && dart format packages/amds_tokens/lib/src/tokens.dart' and commit" && exit 1)
+            || (echo "::error::amds_tokens is stale — run 'melos run tokens' and commit" && exit 1)
 
       - name: Format check (advisory in v1.0 — run `melos run format` locally)
         continue-on-error: true
         run: dart format --output=none --set-exit-if-changed packages apps widgetbook
 
       - name: Analyze
-        run: melos run analyze
+        run: dart analyze .
 
       - name: Test (Flutter — includes Alchemist CI goldens)
-        run: melos run test
+        run: |
+          set -e
+          for d in packages/amds_motion packages/amds_ui apps/starter apps/_template; do
+            echo "::group::flutter test $d" && (cd "$d" && flutter test) && echo "::endgroup::"
+          done
 
       - name: Test (pure Dart)
-        run: melos run test:dart
+        run: cd packages/amds_core && dart test

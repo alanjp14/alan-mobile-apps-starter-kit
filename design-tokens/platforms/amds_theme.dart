@@ -14,6 +14,7 @@
 //   Container(padding: EdgeInsets.all(t.space4), ...)
 // ============================================================================
 
+import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:flutter/material.dart';
 
 /// Raw palette ramps. Prefer [AmdsColors] semantic aliases in product code.

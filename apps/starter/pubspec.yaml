@@ -11,12 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  amds_ui:
-    path: ../../packages/amds_ui
-  amds_core:
-    path: ../../packages/amds_core
-  app_config:
-    path: ../../packages/app_config
+  amds_ui: any
+  amds_core: any
+  app_config: any
 
 dev_dependencies:
   flutter_lints: ^5.0.0

@@ -368,7 +368,7 @@ const acmeBrand = BrandTheme(
      → sets package name, bundle ids, flavors, entrypoints
 2. Edit apps/acme_field/lib/brand.dart    # BrandTheme: color seed, logo, font
 3. Edit AppConfig                         # name, api base, feature flags
-4. melos bootstrap && melos run gen
+4. flutter pub get && melos run gen
 5. flutter run --flavor dev -t lib/main_dev.dart   # working app: splash, login, dashboard, settings
 6. mason make amds_feature --name work_orders       # generate the first real feature
      → configure RecordListConfig + RecordDetailConfig + FormSchema
@@ -422,7 +422,7 @@ Avoid for v1: heavyweight offline-sync frameworks, `get`/`getx`, hand-rolled DI,
 
 ## 17. Definition of done (the starter kit itself)
 
-- [ ] `melos bootstrap && melos run test` green from a clean clone
+- [ ] `flutter pub get && melos run test` (or the direct commands — see FLUTTER.md) green from a clean clone
 - [ ] `apps/starter` runs on Android + iOS, all 13 screens reachable, mock data flows end-to-end
 - [ ] `apps/_template` runs (splash → login → dashboard → settings) and is documented as the clone target
 - [ ] `tool/build_tokens.dart` regenerates `amds_tokens` from `design-tokens/tokens.json`; CI checks freshness

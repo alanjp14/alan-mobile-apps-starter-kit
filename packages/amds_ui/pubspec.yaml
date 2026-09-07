@@ -11,10 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  amds_tokens:
-    path: ../amds_tokens
-  amds_motion:
-    path: ../amds_motion
+  amds_tokens: any
+  amds_motion: any
 
 dev_dependencies:
   alchemist: ^0.12.0
