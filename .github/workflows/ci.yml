@@ -31,6 +31,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
+          # pin so `dart format` / analyzer output matches what baselines were
+          # generated with — bump deliberately alongside a reformat commit
+          flutter-version: 3.44.8
           channel: stable
       - uses: actions/setup-node@v4
         with:
@@ -39,8 +42,9 @@ jobs:
       - name: Token generator is up to date
         run: |
           node tool/build_tokens.mjs
+          dart format packages/amds_tokens/lib/src/tokens.dart
           git diff --exit-code packages/amds_tokens/lib/src/tokens.dart \
-            || (echo "::error::amds_tokens is stale — run 'node tool/build_tokens.mjs' and commit" && exit 1)
+            || (echo "::error::amds_tokens is stale — run 'node tool/build_tokens.mjs && dart format packages/amds_tokens/lib/src/tokens.dart' and commit" && exit 1)
 
       - name: Resolve workspace
         run: flutter pub get
